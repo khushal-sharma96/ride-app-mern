@@ -7,18 +7,30 @@ import UserRegister from './pages/userRegister'
 import CaptainRegister from './pages/captainRegister'
 import CaptainHome from './pages/captain/captainHome'
 import SelectVehicle from './pages/selectVehicle'
-
+import AuthWrapper from './components/AuthWrapper'
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element = {<HomeComponent/>} />
-        <Route path="/user/login" element = {<UserLogin/>} />
-        <Route path="/user/vehicle/search" element = {<SelectVehicle/>} />
-        <Route path="/captain/login" element = {<CaptainLogin/>} />
-        <Route path="/user/register" element = {<UserRegister/>} />
-        <Route path="/captain/register" element = {<CaptainRegister/>} />
-        <Route path="/captain" element = {<CaptainHome/>} />
+        <Route path="/" element = {<AuthWrapper>
+            <HomeComponent/>
+          </AuthWrapper>
+          } />
+        <Route path="/user/vehicle/search" element = {
+          <AuthWrapper>
+            <SelectVehicle/>
+          </AuthWrapper>
+          } />
+        <Route path="/captain" element = {
+          <AuthWrapper>
+            <CaptainHome/>
+          </AuthWrapper>
+          } />
+        
+          <Route path="/user/login" element = {<UserLogin/>} />
+          <Route path="/captain/login" element = {<CaptainLogin/>} />
+          <Route path="/user/register" element = {<UserRegister/>} />
+          <Route path="/captain/register" element = {<CaptainRegister/>} />
       </Routes>
     </div>
   )

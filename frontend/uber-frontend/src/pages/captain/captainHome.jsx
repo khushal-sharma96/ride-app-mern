@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapComponent from "../../components/MapComponent";
 const CaptainHome = () => {
@@ -7,6 +7,32 @@ const CaptainHome = () => {
         // logout logic..........
         navigate('/user/login');
     }
+    const [rides,setRides] = useState([
+        {
+        username:'Michael Thompson',
+        fare:213,
+        vehicleNumber:'HR02 AB 1817',
+        pickupLocation:"Tribune Chowk, Chandigarh",
+        dropLocation:"CP Mall, Sector 67, Mohali",
+        distance:20
+    },
+        {
+        username:'Anne Thompson',
+        fare:213,
+        vehicleNumber:'HR02 AB 1817',
+        pickupLocation:"Tribune Chowk, Chandigarh",
+        dropLocation:"CP Mall, Sector 67, Mohali",
+        distance:20
+    },
+        {
+        username:'William Thompson',
+        fare:213,
+        vehicleNumber:'HR02 AB 1817',
+        pickupLocation:"Tribune Chowk, Chandigarh",
+        dropLocation:"CP Mall, Sector 67, Mohali",
+        distance:20
+    },
+    ]);
     return (
         <>
             <div className="h-screen relative">
@@ -29,81 +55,37 @@ const CaptainHome = () => {
                         </div>
                     </div>
                     <div className="p-2 absolute bottom-0 bg-white w-full max-h-[50vh] overflow-scroll">
-                        <div className="bg-zinc-300 rounded-lg p-2 my-3">
-                            <div className="flex items-center justify-between">
-                                <div className="w-20 rounded-full overflow-hidden border-5 border-zinc-400">
-                                    <img src="/images/user.jpg" className="object-cover" alt="" />
+                        {
+                            rides.map((ride)=>{
+                                return (
+                                <div key={ride} className="bg-zinc-300 rounded-lg p-2 my-3">
+                                    <div className="flex items-center justify-between">
+                                        <div className="w-20 rounded-full overflow-hidden border-5 border-zinc-400">
+                                            <img src="/images/user.jpg" className="object-cover" alt="" />
+                                        </div>
+                                        <div className="text-end">
+                                        <h2 className="text-xs font-semibold text-zinc-700">{ride.username}</h2>
+                                        <span className="font-semibold text-xl">${ride.fare}</span>
+                                        </div>
+                                    </div>
+                                    <div className="relative flex items-center">
+                                        <div className="w-[80%]">
+                                            <h2 className="text-sm font-semibold mt-2 pl-8"><i className="ri-map-pin-line"></i>{ride.pickupLocation}</h2>
+                                            <div className="w-1 bg-black border-dotted h-8 top-2 ml-9 rounded-full"></div>
+                                            <h2 className="text-sm font-semibold mb-2 pl-8"><i className="ri-map-pin-fill"></i>{ride.dropLocation}</h2>
+                                        </div>
+                                        <div className="w-[20%] text-center">
+                                            <span className="font-semibold text-sm bg-white rounded-full p-1 px-2">{ride.distance} Kms</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between px-3">
+                                        <button className="p-2 bg-red-500 text-sm font-semibold rounded-lg w-20">Reject</button>
+                                        <button className="p-2 bg-yellow-400 text-sm font-semibold rounded-lg w-20">Accept</button>
+                                    </div>
                                 </div>
-                                <div className="text-end">
-                                <h2 className="text-xs font-semibold text-zinc-700">Michael Thompson</h2>
-                                <span className="font-semibold text-xl">$125</span>
-                                </div>
-                            </div>
-                            <div className="relative flex items-center">
-                                <div className="w-[80%]">
-                                    <h2 className="text-sm font-semibold mt-2 pl-8"><i className="ri-map-pin-line"></i>Tribune Chowk, Chandigarh</h2>
-                                    <div className="w-1 bg-black border-dotted h-8 top-2 ml-9 rounded-full"></div>
-                                    <h2 className="text-sm font-semibold mb-2 pl-8"><i className="ri-map-pin-fill"></i>CP Mall, Sector 67, Mohali</h2>
-                                </div>
-                                <div className="w-[20%] text-center">
-                                    <span className="font-semibold text-sm bg-white rounded-full p-1 px-2">25 Kms</span>
-                                </div>
-                            </div>
-                            <div className="flex justify-between px-3">
-                                <button className="p-2 bg-red-500 text-sm font-semibold rounded-lg w-20">Reject</button>
-                                <button className="p-2 bg-yellow-400 text-sm font-semibold rounded-lg w-20">Accept</button>
-                            </div>
-                        </div>
-                        <div className="bg-zinc-300 rounded-lg p-2 my-3">
-                            <div className="flex items-center justify-between">
-                                <div className="w-20 rounded-full overflow-hidden border-5 border-zinc-400">
-                                    <img src="/images/user.jpg" className="object-cover" alt="" />
-                                </div>
-                                <div className="text-end">
-                                <h2 className="text-xs font-semibold text-zinc-700">Michael Thompson</h2>
-                                <span className="font-semibold text-xl">$125</span>
-                                </div>
-                            </div>
-                            <div className="relative flex items-center">
-                                <div className="w-[80%]">
-                                    <h2 className="text-sm font-semibold mt-2 pl-8"><i className="ri-map-pin-line"></i>Tribune Chowk, Chandigarh</h2>
-                                    <div className="w-1 bg-black border-dotted h-8 top-2 ml-9 rounded-full"></div>
-                                    <h2 className="text-sm font-semibold mb-2 pl-8"><i className="ri-map-pin-fill"></i>CP Mall, Sector 67, Mohali</h2>
-                                </div>
-                                <div className="w-[20%] text-center">
-                                    <span className="font-semibold text-sm bg-white rounded-full p-1 px-2">25 Kms</span>
-                                </div>
-                            </div>
-                            <div className="flex justify-between px-3">
-                                <button className="p-2 bg-red-500 text-sm font-semibold rounded-lg w-20">Reject</button>
-                                <button className="p-2 bg-yellow-400 text-sm font-semibold rounded-lg w-20">Accept</button>
-                            </div>
-                        </div>
-                        <div className="bg-zinc-300 rounded-lg p-2 my-3">
-                            <div className="flex items-center justify-between">
-                                <div className="w-20 rounded-full overflow-hidden border-5 border-zinc-400">
-                                    <img src="/images/user.jpg" className="object-cover" alt="" />
-                                </div>
-                                <div className="text-end">
-                                <h2 className="text-xs font-semibold text-zinc-700">Michael Thompson</h2>
-                                <span className="font-semibold text-xl">$125</span>
-                                </div>
-                            </div>
-                            <div className="relative flex items-center">
-                                <div className="w-[80%]">
-                                    <h2 className="text-sm font-semibold mt-2 pl-8"><i className="ri-map-pin-line"></i>Tribune Chowk, Chandigarh</h2>
-                                    <div className="w-1 bg-black border-dotted h-8 top-2 ml-9 rounded-full"></div>
-                                    <h2 className="text-sm font-semibold mb-2 pl-8"><i className="ri-map-pin-fill"></i>CP Mall, Sector 67, Mohali</h2>
-                                </div>
-                                <div className="w-[20%] text-center">
-                                    <span className="font-semibold text-sm bg-white rounded-full p-1 px-2">25 Kms</span>
-                                </div>
-                            </div>
-                            <div className="flex justify-between px-3">
-                                <button className="p-2 bg-red-500 text-sm font-semibold rounded-lg w-20">Reject</button>
-                                <button className="p-2 bg-yellow-400 text-sm font-semibold rounded-lg w-20">Accept</button>
-                            </div>
-                        </div>
+                                );
+                            })
+                        }
                     </div>
                 </div>
             </div>

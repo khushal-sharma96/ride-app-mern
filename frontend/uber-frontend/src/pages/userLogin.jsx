@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/userContext";
 const userLogin = ()=>{
+    const {updateUser} = useUser();
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const navigate = useNavigate()
@@ -11,8 +13,8 @@ const userLogin = ()=>{
                 email,
                 password
             });
-            console.log(response);
             if(response.status){
+                updateUser({...response.data.user,token:response.data.token});
                 navigate('/');
             }
         }
