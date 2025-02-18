@@ -16,6 +16,10 @@ const SelectRide = () => {
     const searchCaptain = ()=>{
         searchingElement.current.style.display = 'unset'
     };
+    const cancelRide = ()=>{
+        // cancel ride............
+        navigate('/');
+    }
     return (
         <>
             <div className="h-screen relative">
@@ -87,7 +91,7 @@ const SelectRide = () => {
                           src="/images/search-log.gif"
                         />
                         <h2 className="text-lg text-zinc-500 text-center font-semibold my-2 mb-[5%] p-2">Be Patient, we are searching the captain.</h2>
-                        <button onClick={searchCaptain} className="border-red-400 border-3 p-3 text-red-400 text-xl font-semibold w-full rounded-lg">Cancel Ride</button>
+                        <button onClick={cancelRide} className="border-red-400 border-3 p-3 text-red-400 text-xl font-semibold w-full rounded-lg">Cancel Ride</button>
                     </div>
                 </div>
             </div>
