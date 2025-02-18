@@ -4,7 +4,7 @@ import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 // Google Maps container style
 const containerStyle = {
     width: "100%",
-    height: "400px",
+    height: "100%",
 };
 
 
@@ -24,16 +24,16 @@ const MapComponent = () => {
                 });
             },
             (error) => {
-                console.log("Map errorrrr", error);
+                console.log("Map error:", error);
             }
         );
     }, []);
     return (
-        <LoadScript googleMapsApiKey="AIzaSyDlOEOMtCsHSRCGn_TEg0ffWXdWjC3I5GY">
+        <LoadScript googleMapsApiKey={import.meta.env.GOOGLE_MAP_KEY}>
             <GoogleMap
                 mapContainerStyle={containerStyle}
                 center={location}
-                zoom={20} // Adjust zoom level as needed
+                zoom={18} 
             >
                 <Marker position={location} />
             </GoogleMap>

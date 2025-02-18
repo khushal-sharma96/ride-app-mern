@@ -1,5 +1,9 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import MapComponent from "../components/MapComponent";
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
+</script>
 const SelectRide = () => {
     const navigate = useNavigate()
     const [vehicleType,setVehicleType] = useState(null);
@@ -23,7 +27,7 @@ const SelectRide = () => {
     return (
         <>
             <div className="h-screen relative">
-                <img className="h-screen object-cover" src="https://s.wsj.net/public/resources/images/BN-XR452_201802_M_20180228165525.gif" alt="" />
+                <MapComponent/>
                 <div className="absolute w-screen bg-white bottom-0">
                     <div className="p-2 absolute bg-white w-full h-[60vh] bottom-0">
                         <h3 className="text-2xl font-semibold my-2 mb-4">Select the Vehicle</h3>
