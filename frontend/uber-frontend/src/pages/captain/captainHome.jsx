@@ -1,37 +1,41 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapComponent from "../../components/MapComponent";
+import  {useUser} from '../../context/userContext'
 const CaptainHome = () => {
     const navigate = useNavigate()
-    const logout = ()=>{
+    const {logout,user}  = useUser();
+    const logoutUser = ()=>{
         // logout logic..........
+        logout();
         navigate('/user/login');
     }
+    let userData = user?JSON.parse(user):{};
     const [rides,setRides] = useState([
-        {
-        username:'Michael Thompson',
-        fare:213,
-        vehicleNumber:'HR02 AB 1817',
-        pickupLocation:"Tribune Chowk, Chandigarh",
-        dropLocation:"CP Mall, Sector 67, Mohali",
-        distance:20
-    },
-        {
-        username:'Anne Thompson',
-        fare:213,
-        vehicleNumber:'HR02 AB 1817',
-        pickupLocation:"Tribune Chowk, Chandigarh",
-        dropLocation:"CP Mall, Sector 67, Mohali",
-        distance:20
-    },
-        {
-        username:'William Thompson',
-        fare:213,
-        vehicleNumber:'HR02 AB 1817',
-        pickupLocation:"Tribune Chowk, Chandigarh",
-        dropLocation:"CP Mall, Sector 67, Mohali",
-        distance:20
-    },
+    //     {
+    //     username:'Michael Thompson',
+    //     fare:213,
+    //     vehicleNumber:'HR02 AB 1817',
+    //     pickupLocation:"Tribune Chowk, Chandigarh",
+    //     dropLocation:"CP Mall, Sector 67, Mohali",
+    //     distance:20
+    // },
+    //     {
+    //     username:'Anne Thompson',
+    //     fare:213,
+    //     vehicleNumber:'HR02 AB 1817',
+    //     pickupLocation:"Tribune Chowk, Chandigarh",
+    //     dropLocation:"CP Mall, Sector 67, Mohali",
+    //     distance:20
+    // },
+    //     {
+    //     username:'William Thompson',
+    //     fare:213,
+    //     vehicleNumber:'HR02 AB 1817',
+    //     pickupLocation:"Tribune Chowk, Chandigarh",
+    //     dropLocation:"CP Mall, Sector 67, Mohali",
+    //     distance:20
+    // },
     ]);
     return (
         <>
@@ -41,7 +45,7 @@ const CaptainHome = () => {
                     <div className="p-2 absolute h-[22vh] bottom-0 bg-white w-full">
                         <div className="flex justify-between items-center px-2">
                         <h3 className="text-xl font-semibold my-2">Hi Captain !</h3>
-                        <i onClick={logout} className="ri-logout-box-line text-xl font-semibold bg-zinc-300 p-2 rounded-full py-1"></i>
+                        <i onClick={logoutUser} className="ri-logout-box-line text-xl font-semibold bg-zinc-300 p-2 rounded-full py-1"></i>
                         </div>
                         <span>
                             <i className="text-2xl font-bold absolute right-2 top-5 ri-arrow-down-wide-line hidden"></i>
@@ -49,8 +53,8 @@ const CaptainHome = () => {
                         <div className="flex justify-between mt-3 px-3">
                             <img src="/images/user.jpg" className="w-17 rounded-full border-5 border-zinc-300" alt="" />
                             <div>
-                                <p className="text-zinc-400 text-sm font-semibold">Michael Thompson</p>
-                                <h2 className="font-semibold text-center">HR02 SB 6735</h2>
+                                <p className="text-zinc-400 text-sm font-semibold">{userData?.fullname?.firstname} {userData?.fullname?.lastname}</p>
+                                <h2 className="font-semibold text-center">{userData?.vehicleNumber}</h2>
                             </div>
                         </div>
                     </div>

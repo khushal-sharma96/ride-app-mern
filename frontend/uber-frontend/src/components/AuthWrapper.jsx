@@ -3,8 +3,9 @@ import { useUser } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
 const AuthWrapper = ({children})=>{
     const {user} = useUser();
-    console.log(JSON.parse(user)?.is_login);
+    console.log((user));
     console.log(JSON.parse(user));
+    console.log(JSON.parse(user)?.is_login);
     const navigate = useNavigate()
     useEffect(()=>{
         if(!(user && JSON.parse(user)?.is_login))

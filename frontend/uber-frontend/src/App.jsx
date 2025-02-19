@@ -17,9 +17,7 @@ function App() {
           </AuthWrapper>
           } />
         <Route path="/user/vehicle/search" element = {
-          <AuthWrapper>
             <SelectVehicle/>
-          </AuthWrapper>
           } />
         <Route path="/captain" element = {
           <AuthWrapper>

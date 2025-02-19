@@ -2,41 +2,70 @@ import { useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
 const home = () => {
-    const [pickupLocation, setPickupLocation] = useState("");
-    const [dropLocation, setDropLocation] = useState("");
+    const [pickupLocation, setPickupLocation] = useState({ title: "" });
+    const [dropLocation, setDropLocation] = useState({ title: "" });
     let locationType = useRef("");
-    const isBothEntered = useMemo(() => ((pickupLocation && pickupLocation.length > 2) && (dropLocation && dropLocation.length > 2)), [pickupLocation, dropLocation]);
+    const isBothEntered = useMemo(() => ((pickupLocation && pickupLocation?.title?.length > 2) && (dropLocation && dropLocation?.title?.length > 2)), [pickupLocation, dropLocation]);
     const navigate = useNavigate()
     const recentLocation = useRef();
     const arrowElement = useRef();
     const searchLocationRef = useRef();
-    const [suggestions, setSuggestions] = useState([
-        'Tribune Chowk, Chandigarh',
-        'Elante Nexus, Chandigarh',
-        'CP Mall, Sector 67, Mohali'
-    ]);
+    const [suggestions, setSuggestions] = useState([]);
     const showFullPage = (value, type) => {
         try {
             if (recentLocation?.current?.style) {
                 recentLocation.current.style.display = value ? 'none' : 'block';
                 arrowElement.current.style.display = value ? 'none' : 'unset';
             }
-            if(type)
+            if (type)
                 locationType.current = type;
         }
         catch (err) { console.log(err) }
     }
-    const searchRide = () => {
-        // Hit axios to fetch the distance between.......
-        searchLocationRef.current.style.display = 'none';
-        navigate('/user/vehicle/search');
+    const searchRide = async () => {
+        try {
+            console.log(pickupLocation, dropLocation);
+            if (!(pickupLocation.lat && dropLocation.lat)) {
+                console.log("Not a valid location");
+                return;
+            }
+            const response = await window.$axios.post('/map/fare', {
+                pickupLocation,
+                dropLocation
+            });
+            if (response.status) {
+                searchLocationRef.current.style.display = 'none';
+                navigate('/user/vehicle/search', {
+                    state: {
+                        ...response.data, pickupLocation,
+                        dropLocation
+                    },
+                });
+            }
+            console.log(response);
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
-    const searchSuggestions = (value, is_pickup) => {
-        console.log(value,is_pickup);
-        if (is_pickup)
-            setPickupLocation(value)
-        else
-            setDropLocation(value)
+    const searchSuggestions = async (value, is_pickup) => {
+        try {
+            if (is_pickup)
+                setPickupLocation({ title: value })
+            else
+                setDropLocation({ title: value })
+            const response = await window.$axios.get('/map/suggestions', {
+                params: {
+                    value: value
+                }
+            });
+            if (response.status) {
+                setSuggestions(response.data)
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
         // axios.............value
     }
     const selectLocation = (value) => {
@@ -58,8 +87,8 @@ const home = () => {
                         <span>
                             <i className="text-2xl font-bold absolute right-2 top-5 ri-arrow-down-wide-line hidden" ref={arrowElement} onClick={() => showFullPage(true)}></i>
                         </span>
-                        <input type="text" onClick={() => { showFullPage(false, 'pickup') }} value={pickupLocation} onChange={(e) => searchSuggestions(e.target.value, true)} placeholder="Enter pickup location" className="p-2 bg-gray-100 text-lg font-medium w-full rounded mt-5 pl-8 border-2 border-gray-400" />
-                        <input type="text" onClick={() => showFullPage(false, 'drop')} value={dropLocation} onChange={(e) => searchSuggestions(e.target.value, false)} placeholder="Enter drop location" className="p-2 bg-gray-100 text-lg font-medium w-full rounded mt-5 pl-8 border-2 border-gray-400" />
+                        <input type="text" onClick={() => { showFullPage(false, 'pickup') }} value={pickupLocation?.title} onChange={(e) => searchSuggestions(e.target.value, true)} placeholder="Enter pickup location" className="p-2 bg-gray-100 text-lg font-medium w-full rounded mt-5 pl-8 border-2 border-gray-400" />
+                        <input type="text" onClick={() => showFullPage(false, 'drop')} value={dropLocation?.title} onChange={(e) => searchSuggestions(e.target.value, false)} placeholder="Enter drop location" className="p-2 bg-gray-100 text-lg font-medium w-full rounded mt-5 pl-8 border-2 border-gray-400" />
                     </div>
                     <div className="p-2 relative h-[64vh] hidden bg-300 p-2" ref={recentLocation}>
                         {isBothEntered}
@@ -67,11 +96,11 @@ const home = () => {
                         {
                             suggestions.map((suggestion) => {
                                 return (
-                                    <div className="flex gap-2 mt-2 active:border-black p-2 rounded-lg border-2 border-gray-300" onClick={()=>selectLocation(suggestion)}>
+                                    <div key={suggestion} className="flex gap-2 mt-2 active:border-black p-2 rounded-lg border-2 border-gray-300" onClick={() => selectLocation(suggestion)}>
                                         <span className="bg-gray-200 rounded-full p-2 py-1">
                                             <i className="ri-map-pin-line"></i>
                                         </span>
-                                        <h2 className="text-lg font-medium ml-2">{suggestion}</h2>
+                                        <h2 className="text-lg font-medium ml-2">{suggestion?.title}</h2>
                                     </div>
                                 )
                             })
