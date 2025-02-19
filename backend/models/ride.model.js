@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const schema = mongoose.schema({
+const schema = mongoose.Schema({
     captainId:{
         type:mongoose.Types.ObjectId,
         ref:'user'
@@ -10,7 +10,7 @@ const schema = mongoose.schema({
         required:true
     },
     otp:{
-        minlength:6,
+        type:String,
         maxlength:6,
     },
     pickupLocation:{
@@ -24,14 +24,25 @@ const schema = mongoose.schema({
         minlength:3
     },
     fare:{
+        type: Number,
         required:true
     },
     vehicleType:{
+        type: String,
         required:true,
         enum: ["car", "bike", "auto"],
     },
     status:{
+        type: String,
         required:true,
         enum:['pending','accepted','cancelled','completed']
     }
-}); 
+},
+{
+    timestamps:true
+}
+); 
+schema.index({userId:1});
+schema.index({captainId:1});
+
+module.exports = mongoose.model('ride',schema);
