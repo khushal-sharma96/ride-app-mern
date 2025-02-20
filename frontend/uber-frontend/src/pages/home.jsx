@@ -83,7 +83,8 @@ const home = () => {
                 <div className="absolute w-screen bg-white bottom-0" ref={searchLocationRef}>
                     <div className="p-2 relative h-[30vh]">
                         <div className="absolute bg-black w-1 h-15 rounded-full top-[52%] left-5"></div>
-                        <h3 className="text-2xl font-semibold my-2">Select the location</h3>
+                        <h3 className="text-xl font-semibold my-2">Select the location</h3>
+                        <i onClick={()=>navigate('/setting')} className="ri-settings-2-line absolute top-2 right-2 text-2xl p-2 bg-zinc-200 rounded-full py-1"></i>
                         <span>
                             <i className="text-2xl font-bold absolute right-2 top-5 ri-arrow-down-wide-line hidden" ref={arrowElement} onClick={() => showFullPage(true)}></i>
                         </span>

@@ -19,4 +19,4 @@ app.get('/',(req,res)=>res.end('Hello World!'));
 app.use('/user',UserRoute)
 app.use('/captain',CaptainRoute);
 app.use('/map',MapRoute);
-module.exports = app;
+module.exports = httpServer;

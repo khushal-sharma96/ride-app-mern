@@ -8,6 +8,8 @@ import CaptainRegister from './pages/captainRegister'
 import CaptainHome from './pages/captain/captainHome'
 import SelectVehicle from './pages/selectVehicle'
 import AuthWrapper from './components/AuthWrapper'
+import SettingPage from './pages/settings'
+import ForgotPassword from './pages/forgotPassword'
 function App() {
   return (
     <div>
@@ -24,11 +26,17 @@ function App() {
             <CaptainHome/>
           </AuthWrapper>
           } />
+        <Route path="/setting" element = {
+          <AuthWrapper>
+            <SettingPage/>
+          </AuthWrapper>
+          } />
         
           <Route path="/user/login" element = {<UserLogin/>} />
           <Route path="/captain/login" element = {<CaptainLogin/>} />
           <Route path="/user/register" element = {<UserRegister/>} />
           <Route path="/captain/register" element = {<CaptainRegister/>} />
+          <Route path="/user/password/forgot" element = {<ForgotPassword/>} />
       </Routes>
     </div>
   )

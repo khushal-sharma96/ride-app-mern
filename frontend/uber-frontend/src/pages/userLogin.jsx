@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 import { useUser } from "../context/userContext";
 const userLogin = () => {
     const { updateUser } = useUser();
@@ -29,9 +29,10 @@ const userLogin = () => {
         <>
             <div className="bg-yellow-400 h-screen mx-auto p-3 flex flex-col item-center justify-center ">
                 <h2 className="text-2xl font-xl absolute text font-semibold top-20 left-5">Welcome!<br/> Its your ride partner.</h2>
-                <img src="/images/car.png" className="w-1/8 absolute top-5 left-5" alt="" />
-                <div className="p-2 px-4 bg-white rounded-lg absolute bottom-[-10px] left-0 w-full h-[70vh]">
-                    <img src="/images/car_gif.gif" className="w-1/2 mx-auto" alt="" />
+                <img src="/images/car.png" className="w-1/10 border-b-3 absolute top-5 left-5" alt="" />
+                <img src="/images/ride.gif" className="w-[60%] absolute rounded-l-full right-0 top-[23%]" alt="" />
+
+                <div className="p-2 px-4 bg-white rounded-2xl absolute bottom-[-10px] left-0 w-full h-[50vh]">
                     <h3 className="text-yellow-500 text-4xl font-semibold mb-3 text-center">Login</h3>
                     <div className="w-full">
                         <label htmlFor="email" className="text-md font-semibold  block">Email</label>
@@ -43,11 +44,15 @@ const userLogin = () => {
                         <label htmlFor="password" className="text-md font-semibold  block">Password</label>
                         <input type="text" id="password" value={password} onChange={(e => {
                             setPassword(e.target.value)
-                        })} placeholder="1234567" className="bg-zinc-200 p-2 rounded block w-full mb-3 font-semibold mt-1" />
+                        })} placeholder="1234567" className="bg-zinc-200 p-2 rounded block w-full mb-0 font-semibold mt-1" />
+                        <div className="text-end mb-4">
+                        <Link to='/user/password/forgot' className="text-xs font-semibold text-right hover:text-yellow-500">Forgot password?</Link>
+                        </div>
                     </div>
                     <div>
                         <button onClick={submitForm} className="bg-yellow-500 p-3 py-2 font-semibold rounded text-lg text-white block w-full">Submit</button>
                     </div>
+                    <p className="text-xs text-center my-2">Don't have account? <Link className="font-semibold text-yellow-500  hover:underline" to='/user/register'>Register</Link></p>
                 </div>
             </div>
         </>
