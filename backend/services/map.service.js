@@ -1,22 +1,31 @@
 const axios = require('axios');
 module.exports.getSuggestions = async (value) => {
-    if (!value) throw new Error("Value is required to get the suggestions");
-    const response = await axios.get("https://geocode.search.hereapi.com/v1/geocode", {
-        params: {
-            apiKey: process.env.HERE_API_KEY,
-            q: value,
-            in: 'countryCode:IND'
-        }
-    });
-    let suggestions = response?.data?.items ?? [];
-    suggestions = suggestions.map((row) => {
-        return {
-            'title': row.title,
-            'lat': row.position.lat,
-            'lng': row.position.lng
-        }
-    });
-    return { status: true, data: suggestions };
+    try{
+
+        if (!value) throw new Error("Value is required to get the suggestions");
+        console.log(value);
+        const response = await axios.get("https://geocode.search.hereapi.com/v1/geocode", {
+            params: {
+                apiKey: process.env.HERE_API_KEY,
+                q: value,
+                in: 'countryCode:IND'
+            }
+        });
+        console.log(response?.data);
+        let suggestions = response?.data?.items ?? [];
+        suggestions = suggestions.map((row) => {
+            return {
+                'title': row.title,
+                'lat': row.position.lat,
+                'lng': row.position.lng
+            }
+        });
+        return { status: true, data: suggestions };
+    }
+    catch(error){
+        console.log(err);
+        return { status: true, error };
+    }
 }
 module.exports.calculateFare = async ({ pickupLocation, dropLocation }) => {
     if (!pickupLocation || !dropLocation) throw new Error("All values are mandatory.");

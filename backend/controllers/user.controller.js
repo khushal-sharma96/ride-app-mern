@@ -29,6 +29,7 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.loginUser = async (req, res) => {
     try {
+        console.log("reqqq");
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(500).json({ status: false, error: errors.array() });

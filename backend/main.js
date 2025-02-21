@@ -6,7 +6,8 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 const httpServer =require('http').createServer(app);
-
+const SocketService = require('./services/socket.service.js');
+SocketService(httpServer);
 const dbConnect = require('./db/db.connect.js');
 const UserRoute = require('./routes/user.route.js');
 const CaptainRoute = require('./routes/captain.route.js');

@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MapComponent from "../../components/MapComponent";
 import  {useUser} from '../../context/userContext'
+import { getSocketInstance } from "../../service/socket.service";
 const CaptainHome = () => {
     const navigate = useNavigate()
+    const socket = getSocketInstance();
     const {logout,user}  = useUser();
     const logoutUser = ()=>{
         // logout logic..........
@@ -11,32 +13,19 @@ const CaptainHome = () => {
         navigate('/user/login');
     }
     let userData = user?JSON.parse(user):{};
-    const [rides,setRides] = useState([
-    //     {
-    //     username:'Michael Thompson',
-    //     fare:213,
-    //     vehicleNumber:'HR02 AB 1817',
-    //     pickupLocation:"Tribune Chowk, Chandigarh",
-    //     dropLocation:"CP Mall, Sector 67, Mohali",
-    //     distance:20
-    // },
-    //     {
-    //     username:'Anne Thompson',
-    //     fare:213,
-    //     vehicleNumber:'HR02 AB 1817',
-    //     pickupLocation:"Tribune Chowk, Chandigarh",
-    //     dropLocation:"CP Mall, Sector 67, Mohali",
-    //     distance:20
-    // },
-    //     {
-    //     username:'William Thompson',
-    //     fare:213,
-    //     vehicleNumber:'HR02 AB 1817',
-    //     pickupLocation:"Tribune Chowk, Chandigarh",
-    //     dropLocation:"CP Mall, Sector 67, Mohali",
-    //     distance:20
-    // },
-    ]);
+    const [rides,setRides] = useState([]);
+    useEffect(()=>{
+        try{
+            console.log(socket);
+            socket.on("receive_ride",(ride)=>{
+                console.log("Receive ride",ride);
+            });
+            socket.emit('chat_message',"bhbh");
+        }
+        catch(err){
+            console.log(err);
+        }
+    });
     return (
         <>
             <div className="h-screen relative">

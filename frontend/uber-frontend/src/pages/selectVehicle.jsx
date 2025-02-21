@@ -1,11 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
-<script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap">
-</script>
+import { getSocketInstance } from "../service/socket.service";
 const SelectRide = () => {
     const navigate = useNavigate()
+    const socket = getSocketInstance();
     const location = useLocation();
     const fareSummary = location.state;
     const [vehicleType, setVehicleType] = useState(null);
@@ -30,7 +29,8 @@ const SelectRide = () => {
             console.log(response);
             if (response.status) {
                 rideData.current = response.data;
-                searchingElement.current.style.display = 'unset'
+                searchingElement.current.style.display = 'unset';
+                socket.emit('SEARCH_CAPTAIN',response.data);
             }
         }
         catch (err) {

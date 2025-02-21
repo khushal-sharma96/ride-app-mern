@@ -5,6 +5,8 @@ import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import axiosInstance from './plugin/axios.plugin.jsx';
 import {UserProvider} from './context/userContext.jsx'
+import {SocketService} from './service/socket.service.js'
+SocketService();
 window.$axios = axiosInstance;
 createRoot(document.getElementById('root')).render(
   <StrictMode>

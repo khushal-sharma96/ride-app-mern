@@ -30,14 +30,14 @@ const userRegister = () => {
     return (
         <>
             <div className="bg-yellow-400 h-screen mx-auto p-3 flex flex-col item-center justify-center ">
-                <h2 className="text-xl font-xl absolute text font-semibold top-20 left-5">Welcome!<br /> Please register to be our member.</h2>
+                <h2 className="text-xl font-xl absolute text font-bold top-[13%] left-5">Welcome!<br /> Please register to be our member.</h2>
                 <img src="/images/car.png" className="w-1/10 border-b-3 absolute top-5 left-5" alt="" />
 
-                <div className="p-2 px-4 bg-white rounded-2xl absolute bottom-[-10px] left-0 w-full h-[75vh]">
+                <div className="p-2 px-4 bg-white rounded-2xl absolute bottom-[-10px] left-0 w-full h-[70vh]">
                     <div className="rounded-full w-1/4 overfow-hidden absolute top-[-30px] left-[35%]">
                         <img src="/images/customer.gif" className="w-full mx-auto rounded-full" alt="" />
                     </div>
-                    <h3 className="text-yellow-500 text-2xl font-semibold mb-3 text-center mt-[20%]">User Registration</h3>
+                    <h3 className="text-yellow-500 text-2xl font-bold mb-3 text-center mt-[20%]">User Registration</h3>
                     <div className="flex gap-2">
                         <div className="w-full">
                             <label htmlFor="firstname" className="text-md font-semibold  block">First Name</label>
@@ -67,8 +67,8 @@ const userRegister = () => {
                     <div>
                         <button onClick={submitForm} className="bg-yellow-500 p-3 rounded text-white font-xxl block w-full">Submit</button>
                     </div>
-                    <p className="text-xs text-center my-2">Already have an account? <Link className="font-semibold text-yellow-500  hover:underline" to='/user/login'>Login</Link></p>
-                    <p className="text-xs text-center my-2">Join as a captain? <Link className="font-semibold text-yellow-500  hover:underline" to='/captain/register'>Captain Registration</Link></p>
+                    <p className="text-sm text-center my-2">Already have an account? <Link className="font-semibold text-yellow-500  hover:underline" to='/user/login'>Login</Link></p>
+                    <p className="text-sm text-center my-2">Join as a captain? <Link className="font-semibold text-yellow-500  hover:underline" to='/captain/register'>Captain Registration</Link></p>
                 </div>
             </div>
         </>
