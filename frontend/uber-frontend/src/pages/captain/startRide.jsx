@@ -1,0 +1,85 @@
+import React, { useRef, useState } from 'react';
+import MapComponent from "../../components/MapComponent";
+const RideAccepted = () => {
+    const captainDetails = {
+        name: "Captain John Doe",
+        vehicle: "Toyota Camry",
+        licensePlate: "XYZ 1234",
+    };
+    const [otp, setOtp] = useState();
+    const isOtpEntered = useRef(true);
+
+    const rideDetails = {
+        otp: "123456",
+        fare: "$25.00",
+        km: "15 km",
+        pickupLocation: "123 Main St, City",
+        dropLocation: "456 Elm St, City",
+    };
+    const cancelRide = async () => {
+        try {
+            confirm("Are you sure to cancel the ride?");
+            // const response = await window.$axios.get(`/user/ride/cancel/${rideData?.current?._id}`);
+            // if (response.status)
+            //     navigate('/');
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+    const verifyOtp = async()=>{
+        // axios......
+    }
+    return (
+        <div className="h-screen relative">
+            <MapComponent />
+            <div className="absolute w-screen bg-white bottom-0">
+                <div className="p-2 absolute bg-white w-full h-[60vh] bottom-[-10px] rounded-xl">
+                    <h2 className="text-2xl font-semibold my-2 mb-[5%]">Ride {isOtpEntered && "Started"}</h2>
+                    <div className='bg-zinc-200 rounded-lg p-3 flex items-center justify-between'>
+                        <div className='flex gap-3 items-center'>
+                            <div className='w-10 rounded-full overflow-hidden'>
+                                <img src="/images/user.jpg" className='w-10 rounded-full' alt="" />
+                            </div>
+                            <div>
+                                <h3 className='text-md font-bold text-zinc-500'>John Thompson</h3>
+                                <h2 className='text-sm font-semibold text flex justify-between'>khushal@yompail.com</h2>
+                            </div>
+                        </div>
+                        <span className="text-2xl text-zinc-800"><i className="ri-chat-3-fill"></i></span>
+                    </div>
+                    <div className="flex gap-3 p-2 py-1 mt-1 border-b-2 py-2 border-zinc-200">
+                        <span><i className="ri-map-pin-user-line text-lg"></i></span>
+                        <h2 className="text-md font-semibold">bdfbdfbb</h2>
+                    </div>
+                    <div className="flex gap-3 p-2 mt-1 py-1 border-b-2 py-2 border-zinc-200">
+                        <span><i className="ri-map-pin-user-fill text-lg"></i></span>
+                        <h2 className="text-md font-semibold">bfdbdfbfd</h2>
+                    </div>
+                    <div className="flex justify-around p-2 mt-1 py-2 border-zinc-200">
+                        <div className="flex gap-3">
+                            <span><i className="ri-currency-line text-lg"></i></span>
+                            <h2 className="text-md font-semibold">$534</h2>
+                        </div>
+                        <div className="flex gap-3">
+                            <span><i className="ri-route-line text-lg"></i></span>
+                            <h2 className="text-md font-semibold">21
+                                kms</h2>
+                        </div>
+                    </div>
+                    {
+                        isOtpEntered?.current && (
+                            <div className='px-1 flex items-center justify-between mb-2'>
+                                <input onChange={(e)=>setOtp(e.target.value)} type="text" placeholder='Enter the OTP' className='p-2 border-2 border-zinc-400 rounded-lg  font-semibold' />
+                                <button onClick={() => verifyOtp()} className="bg-yellow-400 text-white py-1 text-lg w-1/3 font-semibold rounded-lg">Verify</button>
+                            </div>
+                        )
+                    }
+                    <button onClick={() => cancelRide()} className="border-red-400 border-3 p-1 text-red-400 text-lg mt-2 font-semibold w-full rounded-lg">Cancel Ride</button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default RideAccepted;

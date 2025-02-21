@@ -34,3 +34,14 @@ module.exports.loginUser = async(req,res)=>{
         return res.status(500).json({status:false, error:err.getMessage});
     }
 }
+
+module.exports.acceptRide = async(req,res)=>{
+    try{
+        const response = await UserService.acceptRide(req.params.ride_id,req.user._id);
+        return res.status(response?.status?201:422).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({status:false, error:err.getMessage});
+    }
+}

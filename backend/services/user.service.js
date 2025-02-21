@@ -44,20 +44,20 @@ module.exports.createCaptain = async ({ firstname, lastname, email, password, ve
         password,
         vehicleType,
         vehicleNumber
-});
+    });
     return { status: true, user, message: "Captain added successfully" };
 }
-module.exports.createRide = async ({ userId, pickupLocation, dropLocation, fare, vehicleType }) => {
+module.exports.createRide = async ({ userId, pickupLocation, dropLocation, fare, distance, vehicleType, username }) => {
     if (!userId ||
         !pickupLocation ||
         !dropLocation ||
         !fare ||
-        !vehicleType) {
+        !vehicleType || !distance) {
         return { status: false, message: "All the fields are mandatory!" };
     }
-    const existing = await RideModel.findOne({userId,status:{ $in: ['pending', 'accepted'] }});
-    if(existing)
-        return {status:false,message:'Already ride is in process!'};
+    const existing = await RideModel.findOne({ userId, status: { $in: ['pending', 'accepted'] } });
+    if (existing)
+        return { status: false, message: 'Already ride is in process!' };
     const crypto = require('crypto');
     const otp = crypto.randomInt(100000, 999999).toString();
     const ride = await RideModel.create({
@@ -67,7 +67,20 @@ module.exports.createRide = async ({ userId, pickupLocation, dropLocation, fare,
         dropLocation,
         fare,
         vehicleType,
+        distance,
         status: 'pending'
     });
-    return { status: true, data: ride };
+    return { status: true, data: { ...ride?._doc, username: `${username?.firstname} ${username?.lastname}` } };
+}
+
+module.exports.acceptRide = async(ride_id,captain_id)=>{
+    const ride = await RideModel.findById(ride_id);
+    if(!ride)
+        return {status:false, message:'No ride found!'};
+    if(ride.status!='pending')
+        return {status:false, message:'ride already processed!'};
+    ride.status = 'accepted';
+    ride.captain = captain_id;
+    ride.save();
+    return {status:true, data:ride};
 }

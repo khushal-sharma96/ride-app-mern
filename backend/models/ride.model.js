@@ -32,6 +32,10 @@ const schema = mongoose.Schema({
         required:true,
         enum: ["car", "bike", "auto"],
     },
+    distance:{
+        type:Number,
+        required:true
+    },
     status:{
         type: String,
         required:true,

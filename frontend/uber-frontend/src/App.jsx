@@ -10,6 +10,9 @@ import SelectVehicle from './pages/selectVehicle'
 import AuthWrapper from './components/AuthWrapper'
 import SettingPage from './pages/settings'
 import ForgotPassword from './pages/forgotPassword'
+import UserRideStarted from './pages/userStartRide'
+import CaptainRideStarted from './pages/captain/startRide'
+import RideAccepted from './pages/rideAccepted'
 function App() {
   return (
     <div>
@@ -37,6 +40,9 @@ function App() {
           <Route path="/user/register" element = {<UserRegister/>} />
           <Route path="/captain/register" element = {<CaptainRegister/>} />
           <Route path="/user/password/forgot" element = {<ForgotPassword/>} />
+          <Route path="/user/ride/started" element = {<UserRideStarted/>} />
+          <Route path="/captain/ride/started" element = {<CaptainRideStarted/>} />
+          <Route path="/user/ride/accepted" element = {<RideAccepted/>} />
       </Routes>
     </div>
   )

@@ -25,8 +25,8 @@ const SelectRide = () => {
                 dropLocation: fareSummary?.dropLocation?.title,
                 fare: fareSummary ? fareSummary[vehicleType]?.cost : 0,
                 vehicleType: vehicleType,
+                distance:fareSummary?.distance
             });
-            console.log(response);
             if (response.status) {
                 rideData.current = response.data;
                 searchingElement.current.style.display = 'unset';
@@ -47,10 +47,13 @@ const SelectRide = () => {
         catch (err) {
             console.log(err);
         }
-        // cancel ride............
     }
     useEffect(() => {
         if (!fareSummary) navigate('/');
+        socket.on("RIDE_ACCEPTED",(data)=>{
+            console.log(data);
+            navigate("/user/ride/started",actualRide);
+        })
     });
     return (
         <>

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {body} = require('express-validator');
+const {body, param} = require('express-validator');
 const UserController = require('../controllers/user.controller.js');
 const authMiddleware = require('../middleware/auth.middleware.js');
 router.post('/register',[
@@ -25,5 +25,5 @@ router.get('/ride/cancel/:ride_id',authMiddleware,UserController.cancelRide);
 
 router.get('/profile',authMiddleware,UserController.getProfile);
 router.get('/logout',authMiddleware,UserController.logoutUser);
-
+router.post('/socket_id',[param('id').notEmpty().withMessage('Socket id is mandatory!')],authMiddleware,UserController.updateSocketId);
 module.exports = router;

@@ -71,7 +71,7 @@ module.exports.createRide = async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(400).json({ errors: errors.array() })
-        const response = await UserService.createRide({ ...req.body, userId: req.user._id });
+        const response = await UserService.createRide({ ...req.body, userId: req.user._id,username:req.user?.fullname });
         return res.json(response);
     }
     catch (err) {
@@ -96,6 +96,16 @@ module.exports.cancelRide = async (req, res) => {
         return res.status(422).json({ status: false, message });
     }
     catch (err) {
+        return res.status(500).json({ status: false, err: err.getMessage });
+    }
+}
+module.exports.updateSocketId = async (req,res)=>{
+    try{
+        const data = await UserModel.findOneAndUpdate({_id:req.user._id},{socketId:req?.body?.id})
+        return res.json({status:true,message:'Updated successfully.',data:req.param.id});
+    }
+    catch(err){
         console.log(err);
+        return res.status(500).json({ status: false, err: err });
     }
 }
