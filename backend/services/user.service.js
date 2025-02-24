@@ -81,7 +81,7 @@ module.exports.acceptRide = async (ride_id, captain_id) => {
     if (ride.status != 'pending')
         return { status: false, message: 'ride already processed!' };
     ride.status = 'accepted';
-    ride.captain = captain_id;
+    ride.captainId = captain_id;
     ride.save();
     return { status: true, data: ride };
 }

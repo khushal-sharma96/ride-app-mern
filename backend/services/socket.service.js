@@ -19,10 +19,9 @@ module.exports = (httpServer) => {
             io.to(socketIds).emit("receive_ride", data);
         })
         socket.on('ACCEPT_RIDE',async(ride)=>{
-            const  actualRide = await rideModel.findById(ride._id).populate('userId');
-            console.log(actualRide);
+            const  actualRide = await rideModel.findById(ride._id).populate('captainId','fullname image vehicleNumber').populate('userId','socketId');
             if(actualRide){
-                socket.to(actualRide.userId.socketId).emit("RIDE_ACCEPTED",actualRide)
+                socket.to(actualRide?.userId?.socketId).emit("RIDE_ACCEPTED",actualRide)
             }
         })
         socket.on("RIDE_STARTED",async(data)=>{

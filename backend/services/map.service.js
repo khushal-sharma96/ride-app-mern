@@ -23,8 +23,8 @@ module.exports.getSuggestions = async (value) => {
         return { status: true, data: suggestions };
     }
     catch(error){
-        console.log(err);
-        return { status: true, error };
+        console.log(error);
+        return { status: false, error };
     }
 }
 module.exports.calculateFare = async ({ pickupLocation, dropLocation }) => {

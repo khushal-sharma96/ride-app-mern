@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import MapComponent from "../components/MapComponent";
 import { getSocketInstance } from '../service/socket.service';
+import { useLocation } from 'react-router-dom';
 const RideAccepted = () => {
+    const location = useLocation();
     const captainDetails = {
         name: "Captain John Doe",
         vehicle: "Toyota Camry",
@@ -9,13 +11,16 @@ const RideAccepted = () => {
     };
     const [isStarted,setStarted] = useState(false);
     const socket = getSocketInstance();
-    const rideDetails = {
-        otp: "123456",
-        fare: "$25.00",
-        km: "15 km",
-        pickupLocation: "123 Main St, City",
-        dropLocation: "456 Elm St, City",
-    };
+    
+    const rideDetails = location.state;
+    console.log(location);
+    // {
+    //     otp: "123456",
+    //     fare: "$25.00",
+    //     km: "15 km",
+    //     pickupLocation: "123 Main St, City",
+    //     dropLocation: "456 Elm St, City",
+    // };
     const cancelRide = async () => {
         try {
             confirm("Are you sure to cancel the ride?");
@@ -40,7 +45,7 @@ const RideAccepted = () => {
                 <div className="p-2 absolute bg-white w-full h-[60vh] bottom-[-10px] rounded-xl">
                     <div className='flex justify-between items-center'>
                         <h2 className="text-2xl font-semibold my-2 mb-[5%]">Ride {isStarted?'Started':'Accepted'}</h2>
-                        <span className='px-2 border-zinc-700 border-2 rounded-lg font-bold'>876543</span>
+                        <span className='px-2 border-zinc-700 border-2 rounded-lg font-bold'>{rideDetails?.otp}</span>
                     </div>
                     <div className='bg-zinc-200 rounded-lg p-3 relative'>
                         <h2 className='text-lg font-semibold mb-3'>Captain</h2>
@@ -48,26 +53,26 @@ const RideAccepted = () => {
                             <img src="/images/user.jpg" className='w-10 rounded-full' alt="" />
                         </div>
                         <div>
-                            <h3 className='text-md font-bold text-zinc-500'>John Thompson</h3>
-                            <h2 className='text-sm font-semibold text flex justify-between'><span>2 wheeler</span> <span>HR02GB5343</span></h2>
+                            <h3 className='text-md font-bold text-zinc-500'>{rideDetails?.captain?.fullname?.firstname} {rideDetails?.captain?.fullname?.lastname}</h3>
+                            <h2 className='text-sm font-semibold text flex justify-between'><span>{rideDetails?.vehicleType}</span> <span>{rideDetails?.captain?.vehicleNumber}</span></h2>
                         </div>
                     </div>
                     <div className="flex gap-3 p-2 py-1 mt-1 border-b-2 py-2 border-zinc-200">
                         <span><i className="ri-map-pin-user-line text-lg"></i></span>
-                        <h2 className="text-md font-semibold">bdfbdfbb</h2>
+                        <h2 className="text-md font-semibold">{rideDetails?.pickupLocation}</h2>
                     </div>
                     <div className="flex gap-3 p-2 mt-1 py-1 border-b-2 py-2 border-zinc-200">
                         <span><i className="ri-map-pin-user-fill text-lg"></i></span>
-                        <h2 className="text-md font-semibold">bfdbdfbfd</h2>
+                        <h2 className="text-md font-semibold">{rideDetails?.dropLocation}</h2>
                     </div>
                     <div className="flex justify-around p-2 mt-1 py-2 border-zinc-200">
                         <div  className="flex gap-3">
                             <span><i className="ri-currency-line text-lg"></i></span>
-                            <h2 className="text-md font-semibold">$534</h2>
+                            <h2 className="text-md font-semibold">${rideDetails?.fare}</h2>
                         </div>
                         <div className="flex gap-3">
                             <span><i className="ri-route-line text-lg"></i></span>
-                            <h2 className="text-md font-semibold">21
+                            <h2 className="text-md font-semibold">{rideDetails?.distance?.toFixed(1)}
                                 kms</h2>
                         </div>
                     </div>

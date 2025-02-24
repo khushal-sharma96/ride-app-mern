@@ -52,7 +52,7 @@ const SelectRide = () => {
         if (!fareSummary) navigate('/');
         socket.on("RIDE_ACCEPTED",(data)=>{
             console.log(data);
-            navigate("/user/ride/started",actualRide);
+            navigate("/user/ride/accepted",{state:data});
         })
     });
     return (
