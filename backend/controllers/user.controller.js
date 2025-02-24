@@ -35,6 +35,7 @@ module.exports.loginUser = async (req, res) => {
             return res.status(500).json({ status: false, error: errors.array() });
         const { email, password } = req.body;
         const response = await UserService.loginUser({ email, password });
+        if(response.status)
         res.cookie('token', response.data.token);
         return res.status(response.status ? 200 : 404).json(response);
     }
@@ -125,6 +126,26 @@ module.exports.updatePassword = async (req,res)=>{
         if(!errors.isEmpty())
             return res.status(422).json({status:false, error:errors.array()});
         const response = await UserService.updatePassword(req?.user?._id,req.body);
+        return res.status(response.status?201:500).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({ status: false, err: err });
+    }
+}
+module.exports.deactivateAccount = async (req,res)=>{
+    try{
+        const response = await UserService.deactivateAccount(req?.user?._id,req.body?.reason);
+        return res.status(response.status?201:500).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({ status: false, err: err });
+    }
+}
+module.exports.getRideHistory = async (req,res)=>{
+    try{
+        const response = await UserService.getRideHistory(req?.user);
         return res.status(response.status?201:500).json(response);
     }
     catch(err){

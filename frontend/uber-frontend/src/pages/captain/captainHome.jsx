@@ -6,12 +6,7 @@ import { getSocketInstance } from "../../service/socket.service";
 const CaptainHome = () => {
     const navigate = useNavigate()
     const socket = getSocketInstance();
-    const { logout, user } = useUser();
-    const logoutUser = () => {
-        // logout logic..........
-        logout();
-        navigate('/user/login');
-    }
+    const { user } = useUser();
     let userData = user ? JSON.parse(user) : {};
     const [rides, setRides] = useState([]);
     const acceptRide = async (ride, index) => {
@@ -20,7 +15,7 @@ const CaptainHome = () => {
             console.log(response);
             if (response.status) {
                 socket.emit("ACCEPT_RIDE", ride);
-                navigate("/captain/ride/started",{state:ride});
+                navigate("/captain/ride/started", { state: ride });
             }
             else {
                 rides.splice(index, 1);
@@ -49,15 +44,15 @@ const CaptainHome = () => {
                 setRides((prevRides) => [...prevRides, ride]);
             });
             socket.on("ride_accepted", (ride) => {
-                setRides((prevRides)=>prevRides.filter((row)=>row._id!=ride.id));
+                setRides((prevRides) => prevRides.filter((row) => row._id != ride.id));
             });
             intervalValue = setInterval(() => {
-                setRides((prevRides)=>{
-                    if(!prevRides.length) return [];
-                    return  prevRides.map((row) => { return {...row,count:row.count-1}; }).filter((row) => row.count > 0);
+                setRides((prevRides) => {
+                    if (!prevRides.length) return [];
+                    return prevRides.map((row) => { return { ...row, count: row.count - 1 }; }).filter((row) => row.count > 0);
                 });
             }, 1000);
-         
+
         }
         catch (err) {
             console.log(err);
@@ -75,13 +70,15 @@ const CaptainHome = () => {
                     <div className="p-2 absolute h-[22vh] bottom-0 bg-white w-full">
                         <div className="flex justify-between items-center px-2">
                             <h3 className="text-xl font-semibold my-2">Hi Captain !</h3>
-                            <i onClick={logoutUser} className="ri-logout-box-line text-xl font-semibold bg-zinc-300 p-2 rounded-full py-1"></i>
+                            <i onClick={() => navigate('/setting')} className="ri-settings-2-line absolute top-2 right-2 text-2xl p-2 bg-zinc-200 rounded-full py-1"></i>
                         </div>
                         <span>
                             <i className="text-2xl font-bold absolute right-2 top-5 ri-arrow-down-wide-line hidden"></i>
                         </span>
                         <div className="flex justify-between mt-3 px-3">
-                            <img src="/images/user.jpg" className="w-17 rounded-full border-5 border-zinc-300" alt="" />
+                            <div className="w-[15%] border-zinc-200 border-4 rounded-full relative overflow-hidden max-h-[15%]">
+                                <img src={userData?.image ? `${import.meta.env.VITE_BASE_URL}/${userData.image}` : "/images/user.jpg"} className=" rounded-full min-h-[45px]" alt="" />
+                            </div>
                             <div>
                                 <p className="text-zinc-400 text-sm font-semibold">{userData?.fullname?.firstname} {userData?.fullname?.lastname}</p>
                                 <h2 className="font-semibold text-center">{userData?.vehicleNumber}</h2>

@@ -37,7 +37,7 @@ const SettingPage = () => {
                 <Link to="/setting/account"><i className="ri-organization-chart mr-4"></i>Account</Link>
             </div>
             <div className="p-2 pl-5 py-3 text-md font-semibold text-zinc-700 border-b-2 border-zinc-200">
-                <Link to="/setting/ride-history"><i className="ri-history-line mr-4"></i>Ride History</Link>
+                <Link to="/ride/history"><i className="ri-history-line mr-4"></i>Ride History</Link>
             </div>
             <div className="px-2 absolute bottom-1 w-full">
                 <button onClick={logout} className="text-red-400 border-red-400 border-3 px-3 py-2 w-full rounded-lg font-semibold text-lg"><i className="ri-logout-box-line mr-2"></i>Logout</button>

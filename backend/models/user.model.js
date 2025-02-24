@@ -35,6 +35,10 @@ const schema = mongoose.Schema({
     vehicleNumber:String,
     image:{
         type:String,
+    },
+    status:{
+        type:String,
+        default:'active'
     }
 });
 

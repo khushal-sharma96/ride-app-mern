@@ -16,6 +16,7 @@ import RideAccepted from './pages/rideAccepted'
 import UserProfile from './pages/settings/userProfile'
 import UpdatePassword from './pages/settings/updatePassword'
 import DeactivateAccount from './pages/settings/deactivateAccount'
+import RideHistory from './pages/rideHistory'
 function App() {
   return (
     <div>
@@ -49,6 +50,7 @@ function App() {
           <Route path="/user/ride/accepted" element = {<RideAccepted/>} />
           <Route path="/setting/pasword/update" element = {<UpdatePassword/>} />
           <Route path="/setting/account" element = {<DeactivateAccount/>} />
+          <Route path="/ride/history" element = {<RideHistory/>} />
       </Routes>
     </div>
   )
