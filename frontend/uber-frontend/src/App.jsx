@@ -13,6 +13,9 @@ import ForgotPassword from './pages/forgotPassword'
 import UserRideStarted from './pages/userStartRide'
 import CaptainRideStarted from './pages/captain/startRide'
 import RideAccepted from './pages/rideAccepted'
+import UserProfile from './pages/settings/userProfile'
+import UpdatePassword from './pages/settings/updatePassword'
+import DeactivateAccount from './pages/settings/deactivateAccount'
 function App() {
   return (
     <div>
@@ -36,6 +39,7 @@ function App() {
           } />
         
           <Route path="/user/login" element = {<UserLogin/>} />
+          <Route path="/user/profile" element = {<UserProfile/>} />
           <Route path="/captain/login" element = {<CaptainLogin/>} />
           <Route path="/user/register" element = {<UserRegister/>} />
           <Route path="/captain/register" element = {<CaptainRegister/>} />
@@ -43,6 +47,8 @@ function App() {
           <Route path="/user/ride/started" element = {<UserRideStarted/>} />
           <Route path="/captain/ride/started" element = {<CaptainRideStarted/>} />
           <Route path="/user/ride/accepted" element = {<RideAccepted/>} />
+          <Route path="/setting/pasword/update" element = {<UpdatePassword/>} />
+          <Route path="/setting/account" element = {<DeactivateAccount/>} />
       </Routes>
     </div>
   )

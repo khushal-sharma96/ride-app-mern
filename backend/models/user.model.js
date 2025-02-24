@@ -32,14 +32,16 @@ const schema = mongoose.Schema({
         default:1
     },
     vehicleType:String,
-    vehicleNumber:String
+    vehicleNumber:String,
+    image:{
+        type:String,
+    }
 });
 
 schema.methods.generateAuthToken = async function(){
     return jwt.sign({_id:this._id,name:this.fullname},process.env.JWT_STRING);
 };
 schema.methods.comparePassword = async function(password){
-    console.log(password,this);
     return await bcrypt.compare(password,this.password); 
 }
 schema.statics.hashPassword = async(password)=>{

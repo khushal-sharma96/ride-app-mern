@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MapComponent from "../components/MapComponent";
+import { getSocketInstance } from '../service/socket.service';
 const RideAccepted = () => {
     const captainDetails = {
         name: "Captain John Doe",
         vehicle: "Toyota Camry",
         licensePlate: "XYZ 1234",
     };
-
+    const [isStarted,setStarted] = useState(false);
+    const socket = getSocketInstance();
     const rideDetails = {
         otp: "123456",
         fare: "$25.00",
@@ -25,13 +27,19 @@ const RideAccepted = () => {
             console.log(err);
         }
     }
+    useEffect(()=>{
+        socket.on("RIDE_STARTED",(data)=>{
+            console.log("Ride started!",data);
+            setStarted(true);
+        })
+    });
     return (
         <div className="h-screen relative">
             <MapComponent />
             <div className="absolute w-screen bg-white bottom-0">
                 <div className="p-2 absolute bg-white w-full h-[60vh] bottom-[-10px] rounded-xl">
                     <div className='flex justify-between items-center'>
-                        <h2 className="text-2xl font-semibold my-2 mb-[5%]">Ride Accepted</h2>
+                        <h2 className="text-2xl font-semibold my-2 mb-[5%]">Ride {isStarted?'Started':'Accepted'}</h2>
                         <span className='px-2 border-zinc-700 border-2 rounded-lg font-bold'>876543</span>
                     </div>
                     <div className='bg-zinc-200 rounded-lg p-3 relative'>

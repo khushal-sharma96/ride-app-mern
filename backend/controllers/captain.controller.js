@@ -45,3 +45,14 @@ module.exports.acceptRide = async(req,res)=>{
         return res.status(500).json({status:false, error:err.getMessage});
     }
 }
+
+module.exports.verifyOtp = async(req,res)=>{
+    try{
+        const response = await UserService.verifyOtp(req.body.ride_id,req.body.ride_id);
+        return res.status(response?.status?201:422).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({status:false, error:err.getMessage});
+    }
+}

@@ -109,3 +109,26 @@ module.exports.updateSocketId = async (req,res)=>{
         return res.status(500).json({ status: false, err: err });
     }
 }
+module.exports.updateProfile = async (req,res)=>{
+    try{
+        const response = await UserService.updateProfile(req?.user?._id,req.body,req?.file);
+        return res.status(response.status?201:500).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({ status: false, err: err });
+    }
+}
+module.exports.updatePassword = async (req,res)=>{
+    try{
+        const errors = validationResult(req);
+        if(!errors.isEmpty())
+            return res.status(422).json({status:false, error:errors.array()});
+        const response = await UserService.updatePassword(req?.user?._id,req.body);
+        return res.status(response.status?201:500).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({ status: false, err: err });
+    }
+}

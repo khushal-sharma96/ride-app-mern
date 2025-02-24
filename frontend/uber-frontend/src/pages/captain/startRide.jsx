@@ -1,14 +1,16 @@
 import React, { useRef, useState } from 'react';
 import MapComponent from "../../components/MapComponent";
+import { useNavigate, useLocation } from "react-router-dom";
 const RideAccepted = () => {
+    // const locationInstance = useLocation();
+    // const rideDetails = locationInstance.state;
     const captainDetails = {
         name: "Captain John Doe",
         vehicle: "Toyota Camry",
         licensePlate: "XYZ 1234",
     };
     const [otp, setOtp] = useState();
-    const isOtpEntered = useRef(true);
-
+    const [isOtpEntered,setOtpEntered] = useState(true);
     const rideDetails = {
         otp: "123456",
         fare: "$25.00",
@@ -29,13 +31,26 @@ const RideAccepted = () => {
     }
     const verifyOtp = async()=>{
         // axios......
+        try{
+            const response = await window.$axios.post("/captain/otp/verify",{
+                otp
+            });
+            if(response.status){
+                setOtpEntered(false)
+                
+            }
+        }
+        catch(err){
+            console.log(err)
+
+        }
     }
     return (
         <div className="h-screen relative">
             <MapComponent />
             <div className="absolute w-screen bg-white bottom-0">
                 <div className="p-2 absolute bg-white w-full h-[60vh] bottom-[-10px] rounded-xl">
-                    <h2 className="text-2xl font-semibold my-2 mb-[5%]">Ride {isOtpEntered && "Started"}</h2>
+                    <h2 className="text-2xl font-semibold my-2 mb-[5%]">Ride {!isOtpEntered && "Started"}</h2>
                     <div className='bg-zinc-200 rounded-lg p-3 flex items-center justify-between'>
                         <div className='flex gap-3 items-center'>
                             <div className='w-10 rounded-full overflow-hidden'>
@@ -68,7 +83,7 @@ const RideAccepted = () => {
                         </div>
                     </div>
                     {
-                        isOtpEntered?.current && (
+                        isOtpEntered && (
                             <div className='px-1 flex items-center justify-between mb-2'>
                                 <input onChange={(e)=>setOtp(e.target.value)} type="text" placeholder='Enter the OTP' className='p-2 border-2 border-zinc-400 rounded-lg  font-semibold' />
                                 <button onClick={() => verifyOtp()} className="bg-yellow-400 text-white py-1 text-lg w-1/3 font-semibold rounded-lg">Verify</button>

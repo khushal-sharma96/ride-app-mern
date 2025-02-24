@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const upload = require('../multer.config.js');
 const {body, param} = require('express-validator');
 const UserController = require('../controllers/user.controller.js');
 const authMiddleware = require('../middleware/auth.middleware.js');
@@ -26,4 +27,9 @@ router.get('/ride/cancel/:ride_id',authMiddleware,UserController.cancelRide);
 router.get('/profile',authMiddleware,UserController.getProfile);
 router.get('/logout',authMiddleware,UserController.logoutUser);
 router.post('/socket_id',[param('id').notEmpty().withMessage('Socket id is mandatory!')],authMiddleware,UserController.updateSocketId);
+router.post('/profile',authMiddleware,upload.single("image"),UserController.updateProfile);
+router.post('/password/update',[
+    body('newPassword').notEmpty().withMessage('New password is mandatory'),
+    body('oldPassword').notEmpty().withMessage('Old password is mandatory'),
+],authMiddleware,UserController.updatePassword);
 module.exports = router;

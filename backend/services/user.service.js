@@ -84,3 +84,40 @@ module.exports.acceptRide = async(ride_id,captain_id)=>{
     ride.save();
     return {status:true, data:ride};
 }
+
+module.exports.verifyOtp = async(ride_id,otp_value)=>{
+    const ride = await RideModel.findById(ride_id);
+    if(ride && ride.otp==otp_value){
+        ride.status = 'started';
+        ride.save();
+        return {status:true,data:ride};
+    }
+    return {status:false, message:"Cant start the ride!"};
+}
+
+module.exports.updateProfile = async(user_id,profileData,image)=>{
+    if(!user_id)
+        return {status:false, message:"User id is mandatory!"};
+    const userData = await UserModel.findById(user_id);
+    if(!userData)
+        return {status:false, message:"User not found!"};
+    if(profileData?.fullname)
+        userData.fullname = JSON.parse(profileData.fullname)
+    if(image)
+        userData.image = 'uploads/'+image?.filename;
+    userData.save();
+    return {status:true,data:userData}
+}
+module.exports.updatePassword = async(user_id,{oldPassword,newPassword})=>{
+    if(!user_id || !oldPassword || !newPassword)
+        return {status:false, message:"All fields are mandatory!"};
+    const userData = await UserModel.findById(user_id).select("+password");
+    if(!userData)
+        return {status:false, message:"User not found!"};
+    const is_same = await userData.comparePassword(oldPassword)
+    if(!is_same)
+        return {statsu:false,message:"Invalid password!"};
+    userData.password = await UserModel.hashPassword(newPassword);
+    userData.save();
+    return {status:true,message:"Password updated successfully"}
+}

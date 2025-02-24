@@ -1,17 +1,19 @@
 import { createContext, useContext, useEffect, useState } from "react";
 const UserContext = createContext();
 export const UserProvider = (prop)=>{
-    console.log("context entered!!");
     const [user,setUser] = useState(()=>{
       const userData = localStorage.getItem('user');
       return userData?JSON.parse(userData):{is_login:false}
     });
     // For login.....
     const updateUser = (value)=>{
+      let token = user?.token;
       const updatedUser = {
         ...value,
         is_login:true
     };
+    if(token && !updatedUser?.token)
+        updatedUser.token = token;
         setUser(updatedUser)
     }
     // For logout the user....
@@ -22,7 +24,6 @@ export const UserProvider = (prop)=>{
     }
 
     useEffect(()=>{
-      console.log("context useEffect!!");
       localStorage.setItem('user',JSON.stringify(user));
     },[user]);
     return (

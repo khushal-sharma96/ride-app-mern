@@ -25,6 +25,13 @@ module.exports = (httpServer) => {
                 socket.to(actualRide.userId.socketId).emit("RIDE_ACCEPTED",actualRide)
             }
         })
+        socket.on("RIDE_STARTED",async(data)=>{
+            const  actualRide = await rideModel.findById(ride._id).populate('userId');
+            console.log(actualRide);
+            if(actualRide){
+                socket.to(actualRide.userId.socketId).emit("RIDE_STARTED",actualRide)
+            }
+        })
 
         socket.on('disconnect', () => {
             console.log('User  disconnected');
