@@ -153,7 +153,7 @@ module.exports.getRideHistory = async (user) => {
         rides = await RideModel.find({ userId: user._id }).populate('captainId');
     return {
         status: true, data: rides.map((ride) => {
-            userdata = user.userType == '2' ? ride?.captainId : ride?.userId;
+            userdata = user.userType == '2' ? ride?.userId : ride?.captainId;
             userdata = {
                 email: userdata?.email,
                 fullname: userdata?.fullname,
@@ -164,8 +164,57 @@ module.exports.getRideHistory = async (user) => {
             return {
                 ...ride?._doc,
                 userdata,
-                createdAt:new Date(ride.createdAt).toLocaleString()
+                createdAt: new Date(ride.createdAt).toLocaleString()
             }
         })
     }
+}
+module.exports.getRideDetails = async (rideId, userId) => {
+    if (!userId || !rideId)
+        return { status: false, message: "All fields are mandatory!" };
+    const ride = await RideModel.findById(rideId)
+        .populate('userId', 'fullname image email')
+        .populate('captainId', 'fullname image email vehicleNumber');
+    if (!ride)
+        return { status: false, message: "Invalid ride id" };
+    if (String(ride?.userId?._id) == String(userId) || String(ride?.captainId?._id) == String(userId))
+        return { status: true, data: { ...ride?._doc, otp: String(ride?.userId?._id) == String(userId) ? ride?.otp : null } }
+    return { status: false, message: "You are not authorised to this ride!" };
+}
+
+module.exports.getCurrentRide = async (userId) => {
+    if (!userId)
+        return { status: false, message: "User id is mandatory!" };
+    const user = await UserModel.findById(userId);
+    if (!user)
+        return { status: false, message: "User not found!" };
+
+    let condition = {
+        status: { $in: ['accepted', 'pending', 'started'] },
+    };
+    if (user.userType == '2')
+        condition.captainId = userId;
+    else condition.userId = userId;
+
+    const ride = await RideModel.findOne(condition);
+    return { status: true, data: ride };
+}
+module.exports.completeRide = async (rideId, userId) => {
+    if (!userId || !rideId)
+        return { status: false, message: "All fields are mandatory!" };
+    const user = await UserModel.findById(userId);
+    if (!user)
+        return { status: false, message: "User not found!" };
+
+    const ride = await RideModel.findById(rideId);
+    if (!ride) return { status: false, message: "Ride not found!" };
+
+    if (String(ride?.captainId) != String(userId))
+        return { status: false, message: "You are not authorised to this ride!" };
+
+    if (ride.status != 'started')
+        return { status: false, message: "Can't complete this ride, already processed!" };
+    ride.status = 'completed'
+    ride.save();
+    return { status: true, data: ride };
 }

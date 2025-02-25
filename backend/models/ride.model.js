@@ -39,7 +39,7 @@ const schema = mongoose.Schema({
     status:{
         type: String,
         required:true,
-        enum:['pending','accepted','cancelled','completed']
+        enum:['pending','accepted','started','cancelled','completed']
     }
 },
 {

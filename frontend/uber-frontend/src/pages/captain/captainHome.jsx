@@ -12,10 +12,9 @@ const CaptainHome = () => {
     const acceptRide = async (ride, index) => {
         try {
             const response = await window.$axios.get('/captain/ride/accept/' + ride._id);
-            console.log(response);
             if (response.status) {
                 socket.emit("ACCEPT_RIDE", ride);
-                navigate("/captain/ride/started", { state: ride });
+                navigate("/captain/ride/started", { state: {rideId:response?.data?._id} });
             }
             else {
                 rides.splice(index, 1);
@@ -36,15 +35,26 @@ const CaptainHome = () => {
             console.log(err);
         }
     }
+    const checkCurrentRide = async () => {
+        try {
+            const response = await window.$axios.get("/user/ride/check");
+            if (response.status) {
+                if (response.data)
+                    navigate("/captain/ride/started", { state: { rideId: response?.data?._id } });
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
     useEffect(() => {
         let intervalValue;
+        checkCurrentRide();
         try {
             socket.on("receive_ride", (ride) => {
+                console.log(ride);
                 ride.count = 30;
                 setRides((prevRides) => [...prevRides, ride]);
-            });
-            socket.on("ride_accepted", (ride) => {
-                setRides((prevRides) => prevRides.filter((row) => row._id != ride.id));
             });
             intervalValue = setInterval(() => {
                 setRides((prevRides) => {
@@ -77,7 +87,7 @@ const CaptainHome = () => {
                         </span>
                         <div className="flex justify-between mt-3 px-3">
                             <div className="w-[15%] border-zinc-200 border-4 rounded-full relative overflow-hidden max-h-[15%]">
-                                <img src={userData?.image ? `${import.meta.env.VITE_BASE_URL}/${userData.image}` : "/images/user.jpg"} className=" rounded-full min-h-[45px]" alt="" />
+                                <img src={userData?.image ? `${import.meta.env.VITE_BASE_URL}/${userData?.image}` : "/images/user.jpg"} className=" rounded-full min-h-[45px]" alt="" />
                             </div>
                             <div>
                                 <p className="text-zinc-400 text-sm font-semibold">{userData?.fullname?.firstname} {userData?.fullname?.lastname}</p>
@@ -91,11 +101,12 @@ const CaptainHome = () => {
                                 return (
                                     <div key={ride} className="bg-zinc-300 rounded-lg p-2 my-3">
                                         <div className="flex items-center justify-between">
+                                            {ride?.image}
                                             <div className="w-20 rounded-full overflow-hidden border-5 border-zinc-400">
-                                                <img src="/images/user.jpg" className="object-cover" alt="" />
+                                                <img src={ride?.userId?.image?`${import.meta.env.VITE_BASE_URL}/${ride?.userId?.image}`:"/images/user.jpg"} className="object-cover" alt="" />
                                             </div>
                                             <div className="text-end">
-                                                <h2 className="text-xs font-semibold text-zinc-700">{ride.username}</h2>
+                                                <h2 className="text-xs font-semibold text-zinc-700">{ride?.userId?.fullname?.firstname} {ride?.userId?.fullname?.lastname}</h2>
                                                 <span className="font-semibold text-xl">${ride.fare}</span>
                                             </div>
                                         </div>

@@ -153,3 +153,23 @@ module.exports.getRideHistory = async (req,res)=>{
         return res.status(500).json({ status: false, err: err });
     }
 }
+module.exports.getCurrentRide = async(req,res)=>{
+    try{
+        const response = await UserService.getCurrentRide(req?.user);
+        return res.status(response.status?201:500).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({ status: false, err: err });
+    }
+}
+module.exports.getRideDetails = async(req,res)=>{
+    try{
+        const response = await UserService.getRideDetails(req.params.rideId,req?.user?._id);
+        return res.status(response?.status?201:422).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({status:false, error:err.getMessage});
+    }
+}

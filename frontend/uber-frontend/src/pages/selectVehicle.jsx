@@ -30,7 +30,7 @@ const SelectRide = () => {
             if (response.status) {
                 rideData.current = response.data;
                 searchingElement.current.style.display = 'unset';
-                socket.emit('SEARCH_CAPTAIN',response.data);
+                socket.emit('SEARCH_CAPTAIN',response.data?._id);
             }
         }
         catch (err) {
@@ -51,8 +51,7 @@ const SelectRide = () => {
     useEffect(() => {
         if (!fareSummary) navigate('/');
         socket.on("RIDE_ACCEPTED",(data)=>{
-            console.log(data);
-            navigate("/user/ride/accepted",{state:data});
+            navigate("/user/ride/accepted",{state:{rideId:data?._id}});
         })
     });
     return (

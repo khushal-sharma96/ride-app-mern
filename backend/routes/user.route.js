@@ -37,4 +37,6 @@ router.post('/password/update',[
 router.post('/account/deactivate',authMiddleware,UserController.deactivateAccount);
 router.get('/ride/history',authMiddleware,UserController.getRideHistory);
 router.get('/mail',sendMail);
+router.get('/ride/check',authMiddleware,UserController.getCurrentRide);
+router.get('/ride/details/:rideId',authMiddleware,UserController.getRideDetails);
 module.exports = router;

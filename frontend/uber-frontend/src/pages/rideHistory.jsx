@@ -27,7 +27,7 @@ const RideHistory = () => {
                             <div className="bg-[#ffd4002e] w-full p-2 rounded-xl relative my-3">
                                 <div className="flex gap-4 items-center justify-between ">
                                     <div className="w-[15%] overflow-hidden max-h-[62%] border-3 border-zinc-600 rounded-full">
-                                        <img src="/images/user.jpg" className="rounded-full rounded-full min-h-[45px]" alt="" />
+                                        <img src={ride?.userdata?.image?`${import.meta.env.VITE_BASE_URL}/${ride?.userdata?.image}`:"/images/user.jpg"} className="rounded-full rounded-full min-h-[45px]" alt="" />
                                     </div>
                                     <div className="text-sm font-bold text-center">
                                         <h2>{ride?.userdata?.fullname?.firstname} {ride?.userdata?.fullname?.lastname}</h2>
