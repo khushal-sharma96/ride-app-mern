@@ -1,19 +1,27 @@
 const UserModel = require('../models/user.model');
 const RideModel = require('../models/ride.model');
 const AccountModel = require('../models/account.model');
+// const mailQueue = require('../queue/mail.queue');
+const sendEmail = require('../services/mail.service');
 module.exports.createUser = async ({ firstname, lastname, email, password }) => {
-    if (!firstname || !lastname || !email || !password)
-        throw new Error('All fields are required!');
+    try {
+        if (!firstname || !lastname || !email || !password)
+            throw new Error('All fields are required!');
 
-    const user = await UserModel.create({
-        fullname: {
-            firstname,
-            lastname
-        },
-        email,
-        password
-    });
-    return { status: true, user };
+        const user = await UserModel.create({
+            fullname: {
+                firstname,
+                lastname
+            },
+            email,
+            password
+        });
+        await sendEmail({email,text:"",subject:"Welcome",firstname});
+        return { status: true,user };
+    }
+    catch (err) {
+        console.log(err);
+    }
 }
 
 module.exports.loginUser = async ({ email, password }) => {

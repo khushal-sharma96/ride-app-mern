@@ -25,9 +25,6 @@ const userLogin = () => {
         }
 
     }
-    useEffect(()=>{
-        
-    });
     return (
         <>
             <div className="bg-yellow-400 h-screen mx-auto p-3 flex flex-col item-center justify-center ">
