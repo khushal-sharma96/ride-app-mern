@@ -29,7 +29,6 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.loginUser = async (req, res) => {
     try {
-        console.log("reqqq");
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(500).json({ status: false, error: errors.array() });
@@ -166,6 +165,16 @@ module.exports.getCurrentRide = async(req,res)=>{
 module.exports.getRideDetails = async(req,res)=>{
     try{
         const response = await UserService.getRideDetails(req.params.rideId,req?.user?._id);
+        return res.status(response?.status?201:422).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({status:false, error:err.getMessage});
+    }
+}
+module.exports.verifyEmail = async(req,res)=>{
+    try{
+        const response  = await UserService.verifyEmail(req?.params?.token);
         return res.status(response?.status?201:422).json(response);
     }
     catch(err){

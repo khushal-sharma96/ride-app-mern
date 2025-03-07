@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MapComponent from "../components/MapComponent";
 import { getSocketInstance } from '../service/socket.service';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { confirmBox } from '../services/sweetalert.service';
 const RideAccepted = () => {
     const location = useLocation();
     console.log(location.state);
@@ -10,7 +11,7 @@ const RideAccepted = () => {
     const [rideDetails, setRideDetails] = useState();
     const cancelRide = async () => {
         try {
-            confirm("Are you sure to cancel the ride?");
+            confirmBox("Are you sure to cancel the ride?");
             // const response = await window.$axios.get(`/user/ride/cancel/${rideData?.current?._id}`);
             // if (response.status)
             //     navigate('/');

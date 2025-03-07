@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import MapComponent from "../../components/MapComponent";
 import { useNavigate, useLocation } from "react-router-dom";
+import { confirmBox } from '../../services/sweetalert.service';
 import { getSocketInstance } from '../../service/socket.service';
 const RideAccepted = () => {
     const socket = getSocketInstance();
@@ -55,19 +56,20 @@ const RideAccepted = () => {
             navigate('/captain', { replace: true });
         }
     }
-    console.log(rideDetails);
     const completeRide = async () => {
         try {
-            const isPaid = confirm("have you get the fare?");
-            if(!isPaid) return;
-            const response = await window.$axios.get('captain/ride/complete/' + rideId);
-            if (response.status) {
-                setRideDetails((prevData) => {
-                    return { ...prevData, status: 'completed' }
-                });
-                socket.emit("RIDE_COMPLETED",rideId);
-                navigate("/captain",{replace:true});
-            }
+            confirmBox("Ride Completed","Have you get the fare?","Yes I have","No I haven't").then(async({isConfirmed})=>{
+                if(isConfirmed){
+                    const response = await window.$axios.get('captain/ride/complete/' + rideId);
+                    if (response.status) {
+                        setRideDetails((prevData) => {
+                            return { ...prevData, status: 'completed' }
+                        });
+                        socket.emit("RIDE_COMPLETED",rideId);
+                        navigate("/captain",{replace:true});
+                    }
+                }
+            });
         }
         catch (err) {
             console.log(err);

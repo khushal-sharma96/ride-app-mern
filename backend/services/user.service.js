@@ -3,6 +3,7 @@ const RideModel = require('../models/ride.model');
 const AccountModel = require('../models/account.model');
 // const mailQueue = require('../queue/mail.queue');
 const sendEmail = require('../services/mail.service');
+const verificationTokenModel = require('../models/verificationToken.model');
 module.exports.createUser = async ({ firstname, lastname, email, password }) => {
     try {
         if (!firstname || !lastname || !email || !password)
@@ -16,7 +17,7 @@ module.exports.createUser = async ({ firstname, lastname, email, password }) => 
             email,
             password
         });
-        await sendEmail({email,text:"",subject:"Welcome",firstname});
+        UserModel.generateMailToken(user._id);
         return { status: true,user };
     }
     catch (err) {
@@ -35,6 +36,10 @@ module.exports.loginUser = async ({ email, password }) => {
 
     if (!checkPassword)
         return { status: false, message: 'Invalid email or password!' };
+    
+    isVerified = await verificationTokenModel.isEmailVerified(user._id);
+    if(!isVerified)
+        return {status:false, message:"Email is not verified!"}; 
 
     const token = await user.generateAuthToken();
     return { status: true, data: { user: user, token } };
@@ -54,6 +59,7 @@ module.exports.createCaptain = async ({ firstname, lastname, email, password, ve
         vehicleType,
         vehicleNumber
     });
+    UserModel.generateMailToken(user._id,true);
     return { status: true, user, message: "Captain added successfully" };
 }
 module.exports.createRide = async ({ userId, pickupLocation, dropLocation, fare, distance, vehicleType, username }) => {
@@ -225,4 +231,17 @@ module.exports.completeRide = async (rideId, userId) => {
     ride.status = 'completed'
     ride.save();
     return { status: true, data: ride };
+}
+module.exports.verifyEmail = async (token) => {
+    if (!token)
+        return { status: false, message: "Token is mandatory!" };
+    const tokenRecord = await verificationTokenModel.findOne({
+        token});
+    if (!tokenRecord)
+        return { status: false, message: "Invalid token!" };
+    if(tokenRecord && tokenRecord?.consumedAt)
+        return { status: false, message: "Token expired!" };
+    
+    await UserModel.verifyUser(tokenRecord);
+    return { status: true, message: "Email is verified successfully." };
 }

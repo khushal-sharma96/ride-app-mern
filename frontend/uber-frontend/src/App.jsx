@@ -17,6 +17,7 @@ import UserProfile from './pages/settings/userProfile'
 import UpdatePassword from './pages/settings/updatePassword'
 import DeactivateAccount from './pages/settings/deactivateAccount'
 import RideHistory from './pages/rideHistory'
+import VerifyEmail from './pages/verifyEmail'
 function App() {
   return (
     <div>
@@ -51,6 +52,7 @@ function App() {
           <Route path="/setting/pasword/update" element = {<UpdatePassword/>} />
           <Route path="/setting/account" element = {<DeactivateAccount/>} />
           <Route path="/ride/history" element = {<RideHistory/>} />
+          <Route path="/user/verify/:token" element = {<VerifyEmail/>} />
       </Routes>
     </div>
   )

@@ -39,4 +39,5 @@ router.get('/ride/history',authMiddleware,UserController.getRideHistory);
 router.get('/mail',sendMail);
 router.get('/ride/check',authMiddleware,UserController.getCurrentRide);
 router.get('/ride/details/:rideId',authMiddleware,UserController.getRideDetails);
+router.get('/verify/:token',UserController.verifyEmail);
 module.exports = router;

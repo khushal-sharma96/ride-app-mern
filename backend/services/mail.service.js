@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
         pass: process.env.MAIL_PASS
     }
 });
-module.exports = async ({ email, subject, text, firstname, verifyLink }) => {
+module.exports = async ({ email, subject, text, firstname, verifyLink,token }) => {
     const htmlContent = `
         <div style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 20px;">
         <div style="max-width: 100vw; margin: auto; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); padding: 20px;">
@@ -19,7 +19,7 @@ module.exports = async ({ email, subject, text, firstname, verifyLink }) => {
                 <p>Hi <bold>${firstname}</bold>,</p>
                 <p>We are grateful to have you as a part of our ride family. Please verify your account first to move forward by clicking the below button.</p>
                 <p style="text-align:center;">
-                    <a href="${verifyLink}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px;">Verify Email</a>
+                    <a href="${process.env.APP_URL}/user/verify/${token}" style="display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px;">Verify Email</a>
                 </p>
             </div>
             <div style="text-align: center; margin-top: 20px; font-size: 12px; color: #aaa;">
