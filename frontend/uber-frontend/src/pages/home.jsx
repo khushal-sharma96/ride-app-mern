@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState,useEffect  } from "react";
 import { useNavigate } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
 const home = () => {
@@ -42,7 +42,6 @@ const home = () => {
                     },
                 });
             }
-            console.log(response);
         }
         catch (err) {
             console.log(err);
@@ -66,7 +65,6 @@ const home = () => {
         catch (err) {
             console.log(err);
         }
-        // axios.............value
     }
     const selectLocation = (value) => {
         if (locationType?.current) {
@@ -76,6 +74,21 @@ const home = () => {
                 setDropLocation(value)
         }
     }
+    const checkCurrentRide = async()=>{
+        try{
+            const response = await window.$axios.get("/user/ride/check");
+            if(response.status){
+                if(response.data)
+                    navigate("/user/ride/accepted",{state:{rideId:response?.data?._id}});
+            }
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
+    useEffect(()=>{
+        checkCurrentRide();
+    },[]);
     return (
         <>
             <div className="h-screen relative">

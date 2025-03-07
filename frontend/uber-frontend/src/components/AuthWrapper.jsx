@@ -11,9 +11,6 @@ const AuthWrapper = ({children})=>{
         if(!(user && JSON.parse(user)?.is_login))
             navigate('/user/login');
     },[user]);
-    if (!(user && JSON.parse(user)?.isLogin)) {
-        navigate('/user/login');
-      }
     return (<>{children}</>)
 }
 export default AuthWrapper;

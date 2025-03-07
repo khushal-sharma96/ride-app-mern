@@ -4,6 +4,7 @@ const upload = require('../multer.config.js');
 const {body, param} = require('express-validator');
 const UserController = require('../controllers/user.controller.js');
 const authMiddleware = require('../middleware/auth.middleware.js');
+const sendMail = require('../services/mail.service.js');
 router.post('/register',[
     body('email').isEmail().withMessage('Invalid email address'),
     body('fullname.firstname').isLength({min:3}).withMessage('First name must be atleast 3 letters long'),
@@ -32,4 +33,11 @@ router.post('/password/update',[
     body('newPassword').notEmpty().withMessage('New password is mandatory'),
     body('oldPassword').notEmpty().withMessage('Old password is mandatory'),
 ],authMiddleware,UserController.updatePassword);
+
+router.post('/account/deactivate',authMiddleware,UserController.deactivateAccount);
+router.get('/ride/history',authMiddleware,UserController.getRideHistory);
+router.get('/mail',sendMail);
+router.get('/ride/check',authMiddleware,UserController.getCurrentRide);
+router.get('/ride/details/:rideId',authMiddleware,UserController.getRideDetails);
+router.get('/verify/:token',UserController.verifyEmail);
 module.exports = router;

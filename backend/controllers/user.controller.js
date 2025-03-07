@@ -29,12 +29,12 @@ module.exports.registerUser = async (req, res) => {
 
 module.exports.loginUser = async (req, res) => {
     try {
-        console.log("reqqq");
         const errors = validationResult(req);
         if (!errors.isEmpty())
             return res.status(500).json({ status: false, error: errors.array() });
         const { email, password } = req.body;
         const response = await UserService.loginUser({ email, password });
+        if(response.status)
         res.cookie('token', response.data.token);
         return res.status(response.status ? 200 : 404).json(response);
     }
@@ -130,5 +130,55 @@ module.exports.updatePassword = async (req,res)=>{
     catch(err){
         console.log(err);
         return res.status(500).json({ status: false, err: err });
+    }
+}
+module.exports.deactivateAccount = async (req,res)=>{
+    try{
+        const response = await UserService.deactivateAccount(req?.user?._id,req.body?.reason);
+        return res.status(response.status?201:500).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({ status: false, err: err });
+    }
+}
+module.exports.getRideHistory = async (req,res)=>{
+    try{
+        const response = await UserService.getRideHistory(req?.user);
+        return res.status(response.status?201:500).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({ status: false, err: err });
+    }
+}
+module.exports.getCurrentRide = async(req,res)=>{
+    try{
+        const response = await UserService.getCurrentRide(req?.user);
+        return res.status(response.status?201:500).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({ status: false, err: err });
+    }
+}
+module.exports.getRideDetails = async(req,res)=>{
+    try{
+        const response = await UserService.getRideDetails(req.params.rideId,req?.user?._id);
+        return res.status(response?.status?201:422).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({status:false, error:err.getMessage});
+    }
+}
+module.exports.verifyEmail = async(req,res)=>{
+    try{
+        const response  = await UserService.verifyEmail(req?.params?.token);
+        return res.status(response?.status?201:422).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({status:false, error:err.getMessage});
     }
 }

@@ -19,9 +19,11 @@ const userLogin = () => {
                     navigate('/captain');
                 else navigate('/');
             }
+            else window.$toast({ status: 'error', title: response?.message ?? "Something went wrong!" });
         }
         catch (err) {
             console.log(err);
+            window.$toast({ status: 'error', title: err?.response?.data?.message ?? "Something went wrong!" });
         }
 
     }

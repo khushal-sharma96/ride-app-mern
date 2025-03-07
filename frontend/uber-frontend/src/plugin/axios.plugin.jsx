@@ -1,7 +1,7 @@
 import axios from "axios"
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL,
-    timeout: 1000,
+    timeout: 5000,
   });
 
 axiosInstance.interceptors.request.use((config)=>{

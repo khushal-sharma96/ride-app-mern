@@ -21,4 +21,8 @@ router.post('/otp/verify',[
     body('otp').notEmpty().isLength({min:6,nax:6}).withMessage("Otp is mandatory"),
     body('ride_id').notEmpty().withMessage("Ride id is mandatory"),
 ],authMiddleware,CaptainController.verifyOtp);
+
+router.get('/ride/details/:rideId',authMiddleware,CaptainController.getRideDetails);
+router.get('/ride/complete/:rideId',authMiddleware,CaptainController.completeRide);
+
 module.exports = router;

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from 'axios';
 const userRegister = () => {
@@ -10,7 +10,7 @@ const userRegister = () => {
     const submitForm = async (e) => {
         try {
             e.preventDefault();
-            const response = await axios.post('http://localhost:3000/user/register', {
+            const response = await window.$axios.post('/user/register', {
                 email,
                 password,
                 fullname: {
@@ -19,6 +19,7 @@ const userRegister = () => {
                 }
             });
             if (response.status) {
+                window.$toast({status:'success', title:"User is registered sucessfully",text:"PLease check your email for verification."});
                 navigate('/');
             }
         }

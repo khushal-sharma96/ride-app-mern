@@ -34,6 +34,16 @@ module.exports.loginUser = async(req,res)=>{
         return res.status(500).json({status:false, error:err.getMessage});
     }
 }
+module.exports.completeRide = async(req,res)=>{
+    try{
+        const response = await UserService.completeRide(req.params.rideId,req?.user?._id);
+        return res.status(response?.status?201:422).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({status:false, error:err.getMessage});
+    }
+}
 
 module.exports.acceptRide = async(req,res)=>{
     try{
@@ -48,7 +58,18 @@ module.exports.acceptRide = async(req,res)=>{
 
 module.exports.verifyOtp = async(req,res)=>{
     try{
-        const response = await UserService.verifyOtp(req.body.ride_id,req.body.ride_id);
+        const response = await UserService.verifyOtp(req.body.ride_id,req.body.otp);
+        return res.status(response?.status?201:422).json(response);
+    }
+    catch(err){
+        console.log(err);
+        return res.status(500).json({status:false, error:err.getMessage});
+    }
+}
+
+module.exports.getRideDetails = async(req,res)=>{
+    try{
+        const response = await UserService.getRideDetails(req.params.rideId,req?.user?._id);
         return res.status(response?.status?201:422).json(response);
     }
     catch(err){

@@ -12,6 +12,7 @@
   "dependencies": {
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
+    "bull": "^4.16.5",
     "config": "^3.3.12",
     "cookie": "^1.0.2",
     "cookie-parser": "^1.4.7",
@@ -20,9 +21,11 @@
     "express": "^4.21.2",
     "express-validation": "^4.1.1",
     "express-validator": "^7.2.1",
+    "ioredis": "^5.6.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.10.0",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.10.0",
     "socket.io": "^4.8.1"
   }
 }
