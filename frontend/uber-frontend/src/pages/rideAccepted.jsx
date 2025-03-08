@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { confirmBox } from '../services/sweetalert.service';
 const RideAccepted = () => {
     const location = useLocation();
-    console.log(location.state);
     const navigate = useNavigate()
     const socket = getSocketInstance();
     const [rideDetails, setRideDetails] = useState();
@@ -30,6 +29,10 @@ const RideAccepted = () => {
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
             navigate('/', { replace: true })
         }
     }
@@ -41,6 +44,10 @@ const RideAccepted = () => {
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     const payCash = () => {
@@ -51,6 +58,10 @@ const RideAccepted = () => {
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     useEffect(() => {

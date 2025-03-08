@@ -41,10 +41,17 @@ const home = () => {
                         dropLocation
                     },
                 });
-            }
+            } else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:err?.message??"Something went wrong!"
+            });
         }
     }
     const searchSuggestions = async (value, is_pickup) => {
@@ -61,9 +68,17 @@ const home = () => {
             if (response.status) {
                 setSuggestions(response.data)
             }
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     const selectLocation = (value) => {
@@ -81,9 +96,17 @@ const home = () => {
                 if(response.data)
                     navigate("/user/ride/accepted",{state:{rideId:response?.data?._id}});
             }
+            window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch(err){
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     useEffect(()=>{

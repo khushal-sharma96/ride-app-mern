@@ -19,16 +19,23 @@ const CaptainHome = () => {
             else {
                 rides.splice(index, 1);
                 setRides(rides);
+                window.$toast({
+                    type:'error',
+                    title:response.message
+                });
             }
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     const rejectRide = async (index) => {
         try {
-
-            const updatedData = (rides.splice(index, 1));
+            rides.splice(index, 1);
             setRides([...rides]);
         }
         catch (err) {
@@ -42,9 +49,17 @@ const CaptainHome = () => {
                 if (response.data)
                     navigate("/captain/ride/started", { state: { rideId: response?.data?._id } });
             }
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     useEffect(() => {

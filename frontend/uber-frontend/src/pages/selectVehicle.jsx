@@ -32,20 +32,35 @@ const SelectRide = () => {
                 searchingElement.current.style.display = 'unset';
                 socket.emit('SEARCH_CAPTAIN',response.data?._id);
             }
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
-        // searchingElement.current.style.display = 'unset'
     };
     const cancelRide = async () => {
         try {
             const response = await window.$axios.get(`/user/ride/cancel/${rideData?.current?._id}`);
             if (response.status)
                 navigate('/');
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     useEffect(() => {

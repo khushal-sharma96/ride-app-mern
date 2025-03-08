@@ -22,9 +22,17 @@ const userRegister = () => {
                 window.$toast({status:'success', title:"User is registered sucessfully",text:"PLease check your email for verification."});
                 navigate('/');
             }
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
 
     }

@@ -25,6 +25,10 @@ const MapComponent = () => {
             },
             (error) => {
                 console.log("Map error:", error);
+                window.$toast({
+                    type:'error',
+                    title:error?.message??"Something went wrong while loading the map!"
+                });
             }
         );
     }, []);
