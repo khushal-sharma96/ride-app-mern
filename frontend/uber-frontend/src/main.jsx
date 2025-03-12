@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import 'sweetalert2/src/sweetalert2.scss'
 import App from './App.jsx'
 import './index.css'
+import 'mapbox-gl/dist/mapbox-gl.css';
 import { BrowserRouter } from 'react-router-dom'
 import axiosInstance from './plugin/axios.plugin.jsx';
 import {UserProvider} from './context/userContext.jsx'

@@ -2,7 +2,10 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
 import { getSocketInstance } from "../service/socket.service";
+import NewMap from '../components/NewMapComponent'
 const SelectRide = () => {
+    const [mapData,setMapData] = useState(null);
+
     const navigate = useNavigate()
     const socket = getSocketInstance();
     const location = useLocation();
@@ -36,7 +39,6 @@ const SelectRide = () => {
         catch (err) {
             console.log(err);
         }
-        // searchingElement.current.style.display = 'unset'
     };
     const cancelRide = async () => {
         try {
@@ -48,16 +50,36 @@ const SelectRide = () => {
             console.log(err);
         }
     }
+    const fetchMapService = async()=>{
+        try{
+            const response = await $axios.get(`https://api.mapbox.com/directions/v5/mapbox/driving-traffic/${fareSummary?.dist_details?.origin};${fareSummary?.dist_details?.destination}.json?geometries=geojson&steps=true&language=en&access_token=${import.meta.env.VITE_MAP_BOX_TOKEN}`)
+            const data = response.routes[0];
+            const route = data.geometry.coordinates;
+            const geojson = {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                  type: 'LineString',
+                  coordinates: route
+                }
+              };
+              setMapData(geojson)
+        }
+        catch(err){
+            console.log(err);
+        }
+    }
     useEffect(() => {
+        fetchMapService();
         if (!fareSummary) navigate('/');
         socket.on("RIDE_ACCEPTED",(data)=>{
             navigate("/user/ride/accepted",{state:{rideId:data?._id}});
         })
-    });
+    },[]);
     return (
         <>
             <div className="h-screen relative">
-                <MapComponent />
+                <NewMap mapData={mapData} />
                 <div className="absolute w-screen bg-white bottom-0">
                     <div className="p-2 absolute bg-white w-full h-[60vh] bottom-0">
                         <h3 className="text-2xl font-semibold my-2 mb-4">Select the Vehicle</h3>
