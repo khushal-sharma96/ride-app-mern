@@ -8,11 +8,10 @@ const LiveNavigation = (props) => {
     const mapRef = useRef(null);
 
     useEffect(() => {
-        console.log(props);
         if (!props?.mapData) {
             return;
         }
-        mapboxgl.accessToken = 'pk.eyJ1Ijoia2h1c2hhbC05NiIsImEiOiJjbTg1anNocmIxODY3MmpzYWg3cDVldWJoIn0.ghP9SbHf4SWGbMvI-2OAAQ';
+        mapboxgl.accessToken = import.meta.env.VITE_MAP_BOX_TOKEN;
 
         mapRef.current = new mapboxgl.Map({
             container: mapContainerRef.current,
@@ -36,14 +35,14 @@ const LiveNavigation = (props) => {
                 ];
 
                 mapRef.current.loadImage(
-                    'http://localhost:5173/images/origin.png',
+                    `${import.meta.env.VITE_APP_URL}/images/origin.png`,
                     (error, image) => {
                         if (error) throw error;
 
                         mapRef.current.addImage('origin', image);
                     });
                 mapRef.current.loadImage(
-                    'http://localhost:5173/images/destination.png',
+                    `${import.meta.env.VITE_APP_URL}/images/destination.png`,
                     (error, image) => {
                         if (error) throw error;
 
@@ -72,7 +71,7 @@ const LiveNavigation = (props) => {
                         source: 'points' + index,
                         layout: {
                             'icon-image': index?"destination":'origin',
-                            'icon-size': 0.02
+                            'icon-size': index?0.05:0.13,
                         }
                     });
                     // mapRef.current.addLayer({

@@ -57,8 +57,8 @@ module.exports.calculateFare = async ({ pickupLocation, dropLocation }) => {
                 cost: Math.round(distance * process.env.AUTO_COST),
             },
             dist_details:{
-                origin: `${pickupLocation.lng},${pickupLocation.lat}`,
-                destination: `${dropLocation.lng},${dropLocation.lat}`,
+                origin: `${pickupLocation.lng},${pickupLocation.lat }`,
+                destination: `${dropLocation.lng},${dropLocation.lat    }`,
             }
         }
         return { status: true, data: responseData };

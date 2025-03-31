@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import MapComponent from "../components/MapComponent";
+import NewMap from '../components/NewMapComponent'
 import { getSocketInstance } from '../service/socket.service';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { confirmBox } from '../services/sweetalert.service';
+import { cancelRide as CancelRideCommon } from "../helpers/rideHelpers";
 const RideAccepted = () => {
     const location = useLocation();
-    console.log(location.state);
     const navigate = useNavigate()
     const socket = getSocketInstance();
     const [rideDetails, setRideDetails] = useState();
     const cancelRide = async () => {
         try {
-            confirmBox("Are you sure to cancel the ride?");
-            // const response = await window.$axios.get(`/user/ride/cancel/${rideData?.current?._id}`);
-            // if (response.status)
-            //     navigate('/');
+            confirmBox("Are you sure to cancel the ride?").then((res)=>{
+                if(res.isConfirmed && location.state?.rideId)
+                    CancelRideCommon(location.state?.rideId,navigate);
+            });
         }
         catch (err) {
             console.log(err);
@@ -22,6 +23,7 @@ const RideAccepted = () => {
     }
     const getRideData = async () => {
         try {
+            console.log(location);
             const response = await window.$axios.get('/user/ride/details/' + location.state?.rideId);
             if (response.status && ['started', 'accepted'].indexOf(response.data?.status) >= 0) {
                 setRideDetails(response.data);
@@ -66,7 +68,8 @@ const RideAccepted = () => {
     }, []);
     return (
         <div className="h-screen relative">
-            <MapComponent />
+            {/* <MapComponent /> */}
+            <NewMap mapData={location.state?.geojson} />
             <div className="absolute w-screen bg-white bottom-0">
                 <div className="p-2 absolute bg-white w-full h-[60vh] bottom-[-10px] rounded-xl">
                     <div className='flex justify-between items-center'>

@@ -4,7 +4,6 @@ const RideHistory = () => {
     const getRidesHistory = async () => {
         try {
             const response = await window.$axios.get('/user/ride/history');
-            console.log(response);
             if (response.status)
                 setRideData(response.data);
         }
@@ -44,7 +43,7 @@ const RideHistory = () => {
                                                 dropLocation}</h2>
                                         </div>
                                         <span className={
-                                            (ride?.status=='rejected'?'text-red-400':'text-green-600')+" text-xs font-bold text-end capitalize"
+                                            (ride?.status=='cancelled'?'text-red-400':'text-green-600')+" text-xs font-bold text-end capitalize"
                                         }>{ride?.status}</span>
                                     </div>
                                     <div className="flex justify-around mt-3 py-2 border-zinc-200">

@@ -1,8 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import MapComponent from "../components/MapComponent";
 import { getSocketInstance } from "../service/socket.service";
 import NewMap from '../components/NewMapComponent'
+import { cancelRide as CancelRideCommon } from "../helpers/rideHelpers";
 const SelectRide = () => {
     const [mapData,setMapData] = useState(null);
 
@@ -28,12 +28,13 @@ const SelectRide = () => {
                 dropLocation: fareSummary?.dropLocation?.title,
                 fare: fareSummary ? fareSummary[vehicleType]?.cost : 0,
                 vehicleType: vehicleType,
-                distance:fareSummary?.distance
+                distance:fareSummary?.distance,
+                geojson:mapData
             });
             if (response.status) {
                 rideData.current = response.data;
                 searchingElement.current.style.display = 'unset';
-                socket.emit('SEARCH_CAPTAIN',response.data?._id);
+                socket.emit('SEARCH_CAPTAIN',{rideId:response.data?._id,geojson:mapData});
             }
         }
         catch (err) {
@@ -41,14 +42,7 @@ const SelectRide = () => {
         }
     };
     const cancelRide = async () => {
-        try {
-            const response = await window.$axios.get(`/user/ride/cancel/${rideData?.current?._id}`);
-            if (response.status)
-                navigate('/');
-        }
-        catch (err) {
-            console.log(err);
-        }
+        CancelRideCommon(rideData?.current?._id);
     }
     const fetchMapService = async()=>{
         try{
@@ -64,6 +58,9 @@ const SelectRide = () => {
                 }
               };
               setMapData(geojson)
+              socket.on("RIDE_ACCEPTED",(data)=>{
+                navigate("/user/ride/accepted",{state:{rideId:data?._id,geojson:geojson}});
+            })
         }
         catch(err){
             console.log(err);
@@ -72,9 +69,6 @@ const SelectRide = () => {
     useEffect(() => {
         fetchMapService();
         if (!fareSummary) navigate('/');
-        socket.on("RIDE_ACCEPTED",(data)=>{
-            navigate("/user/ride/accepted",{state:{rideId:data?._id}});
-        })
     },[]);
     return (
         <>

@@ -107,7 +107,7 @@ module.exports.verifyOtp = async (ride_id, otp_value) => {
         ride.save();
         return { status: true, data: ride };
     }
-    return { status: false, message: "Cant start the ride!" };
+    return { status: false, message: "Invalid OTP, cant start the ride!" };
 }
 
 module.exports.updateProfile = async (user_id, profileData, image) => {
@@ -116,7 +116,6 @@ module.exports.updateProfile = async (user_id, profileData, image) => {
     const userData = await UserModel.findById(user_id);
     if (!userData)
         return { status: false, message: "User not found!" };
-    console.log(profileData);
     if (profileData?.fullname)
         userData.fullname = JSON.parse(profileData.fullname)
     if (profileData?.vehicleNumber)
