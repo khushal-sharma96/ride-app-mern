@@ -3,14 +3,12 @@ const rideModel = require('../models/ride.model');
 module.exports = (httpServer) => {
     const io = require('socket.io')(httpServer);
     io.on('connection', (socket) => {
-
-        console.log('user is connected', socket.id);
-        socket.on('SEARCH_CAPTAIN', async (rideId) => {
+        socket.on('SEARCH_CAPTAIN', async ({rideId,geojson}) => {
             const UserModel = require('../models/user.model');
             const rideData = await rideModel.findById(rideId).select('-otp').populate('userId','fullname image email');
             const ids = await UserModel.find({ userType: 2 }).select('socketId');
             const socketIds = ids.map(row => row.socketId);
-            io.to(socketIds).emit("receive_ride", rideData);
+            io.to(socketIds).emit("receive_ride", {ride:rideData,geojson});
         })
         socket.on('ACCEPT_RIDE',async(ride)=>{
             const  actualRide = await rideModel.findById(ride._id).populate('captainId','fullname image vehicleNumber').populate('userId','socketId');

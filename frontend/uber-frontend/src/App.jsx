@@ -17,6 +17,8 @@ import UpdatePassword from './pages/settings/updatePassword'
 import DeactivateAccount from './pages/settings/deactivateAccount'
 import RideHistory from './pages/rideHistory'
 import VerifyEmail from './pages/verifyEmail'
+// import LiveComponent from './pages/liveTrack'
+import LiveTest from './pages/testMap'
 function App() {
   return (
     <div>
@@ -51,6 +53,7 @@ function App() {
           <Route path="/setting/account" element = {<DeactivateAccount/>} />
           <Route path="/ride/history" element = {<RideHistory/>} />
           <Route path="/user/verify/:token" element = {<VerifyEmail/>} />
+          <Route path="/live" element = {<LiveTest/>} />
       </Routes>
     </div>
   )

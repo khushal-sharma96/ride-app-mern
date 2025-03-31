@@ -14,7 +14,7 @@ const CaptainHome = () => {
             const response = await window.$axios.get('/captain/ride/accept/' + ride._id);
             if (response.status) {
                 socket.emit("ACCEPT_RIDE", ride);
-                navigate("/captain/ride/started", { state: {rideId:response?.data?._id} });
+                navigate("/captain/ride/started", { state: { rideId: response?.data?._id, geojson: ride?.geojson } });
             }
             else {
                 rides.splice(index, 1);
@@ -26,11 +26,9 @@ const CaptainHome = () => {
             }
         }
         catch (err) {
-            console.log(err);
-            window.$toast({
-                type:'error',
-                title:"Something went wrong!"
-            });
+            rides.splice(index, 1);
+            setRides(rides);
+            window.$toast({ status: 'error', title: err?.response?.data?.message ?? "Something went wrong!" });
         }
     }
     const rejectRide = async (index) => {
@@ -66,9 +64,9 @@ const CaptainHome = () => {
         let intervalValue;
         checkCurrentRide();
         try {
-            socket.on("receive_ride", (ride) => {
-                console.log(ride);
+            socket.on("receive_ride", ({ ride, geojson }) => {
                 ride.count = 30;
+                ride.geojson = geojson;
                 setRides((prevRides) => [...prevRides, ride]);
             });
             intervalValue = setInterval(() => {
@@ -118,7 +116,7 @@ const CaptainHome = () => {
                                         <div className="flex items-center justify-between">
                                             {ride?.image}
                                             <div className="w-20 rounded-full overflow-hidden border-5 border-zinc-400">
-                                                <img src={ride?.userId?.image?`${import.meta.env.VITE_BASE_URL}/${ride?.userId?.image}`:"/images/user.jpg"} className="object-cover" alt="" />
+                                                <img src={ride?.userId?.image ? `${import.meta.env.VITE_BASE_URL}/${ride?.userId?.image}` : "/images/user.jpg"} className="object-cover" alt="" />
                                             </div>
                                             <div className="text-end">
                                                 <h2 className="text-xs font-semibold text-zinc-700">{ride?.userId?.fullname?.firstname} {ride?.userId?.fullname?.lastname}</h2>

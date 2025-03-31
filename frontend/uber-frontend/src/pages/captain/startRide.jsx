@@ -3,6 +3,8 @@ import MapComponent from "../../components/MapComponent";
 import { useNavigate, useLocation } from "react-router-dom";
 import { confirmBox } from '../../services/sweetalert.service';
 import { getSocketInstance } from '../../service/socket.service';
+import { cancelRide as CancelRideCommon } from "../../helpers/rideHelpers";
+import NewMap from '../../components/NewMapComponent'
 const RideAccepted = () => {
     const socket = getSocketInstance();
     const locationInstance = useLocation();
@@ -12,10 +14,10 @@ const RideAccepted = () => {
     const [otp, setOtp] = useState();
     const cancelRide = async () => {
         try {
-            confirm("Are you sure to cancel the ride?");
-            // const response = await window.$axios.get(`/user/ride/cancel/${rideData?.current?._id}`);
-            // if (response.status)
-            //     navigate('/');
+            confirmBox("Are you sure to cancel the ride?").then((res) => {
+                if (res.isConfirmed && locationInstance.state?.rideId)
+                    CancelRideCommon(locationInstance.state?.rideId, navigate);
+            });
         }
         catch (err) {
             console.log(err);
@@ -43,23 +45,17 @@ const RideAccepted = () => {
                 });
                 socket.emit('RIDE_STARTED', rideDetails)
             }
-            else window.$toast({
-                type:'error',
-                title:response.message
-            });
+            else window.$toast({ status: 'error', title: response?.message ?? "Something went wrong!" });
         }
         catch (err) {
-            console.log(err);
-            window.$toast({
-                type:'error',
-                title:"Something went wrong!"
-            });
+            window.$toast({ status: 'error', title: err?.response?.data?.message ?? "Something went wrong!" });
+            console.log(err)
         }
     }
     const getRideData = async () => {
         try {
             const response = await window.$axios.get('/captain/ride/details/' + locationInstance.state?.rideId);
-            if (response.status && ['started','accepted'].indexOf(response.data?.status)>=0)
+            if (response.status && ['started', 'accepted'].indexOf(response.data?.status) >= 0)
                 setRideDetails(response.data);
             else {window.$toast({
                 type:'error',
@@ -81,15 +77,15 @@ const RideAccepted = () => {
     }
     const completeRide = async () => {
         try {
-            confirmBox("Ride Completed","Have you get the fare?","Yes I have","No I haven't").then(async({isConfirmed})=>{
-                if(isConfirmed){
+            confirmBox("Ride Completed", "Have you get the fare?", "Yes I have", "No I haven't").then(async ({ isConfirmed }) => {
+                if (isConfirmed) {
                     const response = await window.$axios.get('captain/ride/complete/' + rideId);
                     if (response.status) {
                         setRideDetails((prevData) => {
                             return { ...prevData, status: 'completed' }
                         });
-                        socket.emit("RIDE_COMPLETED",rideId);
-                        navigate("/captain",{replace:true});
+                        socket.emit("RIDE_COMPLETED", rideId);
+                        navigate("/captain", { replace: true });
                     }
                 }
             });
@@ -112,7 +108,7 @@ const RideAccepted = () => {
     }, []);
     return (
         <div className="h-screen relative">
-            <MapComponent />
+            <NewMap mapData={locationInstance.state?.geojson} />
             <div className="absolute w-screen bg-white bottom-0">
                 <div className="p-2 absolute bg-white w-full h-[60vh] bottom-[-10px] rounded-xl">
                     <h2 className="text-2xl font-semibold my-2 mb-[5%] capitalize">Ride {rideDetails?.status}</h2>

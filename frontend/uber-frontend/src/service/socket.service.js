@@ -11,7 +11,6 @@ export const SocketService = () => {
                 transports: ["websocket"], 
             });
             socket.on("connect", () => {
-                console.log("Socket connected:", socket.id);
                 window.$axios.post('/user/socket_id',{
                     id:socket.id
                 }).catch((err)=>console.log(err));

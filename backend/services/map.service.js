@@ -1,9 +1,8 @@
 const axios = require('axios');
 module.exports.getSuggestions = async (value) => {
-    try{
+    try {
 
         if (!value) throw new Error("Value is required to get the suggestions");
-        console.log(value);
         const response = await axios.get("https://geocode.search.hereapi.com/v1/geocode", {
             params: {
                 apiKey: process.env.HERE_API_KEY,
@@ -11,7 +10,6 @@ module.exports.getSuggestions = async (value) => {
                 in: 'countryCode:IND'
             }
         });
-        console.log(response?.data);
         let suggestions = response?.data?.items ?? [];
         suggestions = suggestions.map((row) => {
             return {
@@ -20,9 +18,9 @@ module.exports.getSuggestions = async (value) => {
                 'lng': row.position.lng
             }
         });
-        return { status: true, data: suggestions };
+        return { status: true, data:suggestions};
     }
-    catch(error){
+    catch (error) {
         console.log(error);
         return { status: false, error };
     }
@@ -58,9 +56,13 @@ module.exports.calculateFare = async ({ pickupLocation, dropLocation }) => {
                 time: distance * process.env.AUTO_TIME,
                 cost: Math.round(distance * process.env.AUTO_COST),
             },
+            dist_details:{
+                origin: `${pickupLocation.lng},${pickupLocation.lat }`,
+                destination: `${dropLocation.lng},${dropLocation.lat    }`,
+            }
         }
         return { status: true, data: responseData };
     }
 
-    return {status:false,message:'Distance could not found!'};
+    return { status: false, message: 'Distance could not found!' };
 }
