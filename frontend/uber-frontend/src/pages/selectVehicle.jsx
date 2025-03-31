@@ -36,9 +36,17 @@ const SelectRide = () => {
                 searchingElement.current.style.display = 'unset';
                 socket.emit('SEARCH_CAPTAIN',{rideId:response.data?._id,geojson:mapData});
             }
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     };
     const cancelRide = async () => {
@@ -64,6 +72,10 @@ const SelectRide = () => {
         }
         catch(err){
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     useEffect(() => {

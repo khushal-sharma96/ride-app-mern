@@ -2,7 +2,6 @@ import './App.css'
 import { Routes, Route } from 'react-router-dom'
 import HomeComponent from './pages/home'
 import UserLogin from './pages/userLogin'
-import CaptainLogin from './pages/captainLogin'
 import UserRegister from './pages/userRegister'
 import CaptainRegister from './pages/captainRegister'
 import CaptainHome from './pages/captain/captainHome'
@@ -44,7 +43,6 @@ function App() {
         
           <Route path="/user/login" element = {<UserLogin/>} />
           <Route path="/user/profile" element = {<UserProfile/>} />
-          <Route path="/captain/login" element = {<CaptainLogin/>} />
           <Route path="/user/register" element = {<UserRegister/>} />
           <Route path="/captain/register" element = {<CaptainRegister/>} />
           <Route path="/user/password/forgot" element = {<ForgotPassword/>} />

@@ -13,9 +13,17 @@ const DeactivateAccount = () => {
                 logout();
                 navigate('/user/login');
             }
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     return (

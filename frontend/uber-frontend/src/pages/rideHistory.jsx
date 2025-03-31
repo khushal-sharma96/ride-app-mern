@@ -6,9 +6,17 @@ const RideHistory = () => {
             const response = await window.$axios.get('/user/ride/history');
             if (response.status)
                 setRideData(response.data);
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     useEffect(() => {

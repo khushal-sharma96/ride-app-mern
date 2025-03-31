@@ -15,10 +15,17 @@ const UpdatePassword = () => {
             if (response.status) {
                 console.log("Data Updated!");
             }
-            else console.log(response)
+            else window.$toast({
+                type:'error',
+                title:response.message
+            });
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     return (

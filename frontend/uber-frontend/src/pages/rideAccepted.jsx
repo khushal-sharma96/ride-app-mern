@@ -32,6 +32,10 @@ const RideAccepted = () => {
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
             navigate('/', { replace: true })
         }
     }
@@ -43,6 +47,10 @@ const RideAccepted = () => {
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     const payCash = () => {
@@ -53,6 +61,10 @@ const RideAccepted = () => {
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     useEffect(() => {

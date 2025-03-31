@@ -25,7 +25,13 @@ const RideAccepted = () => {
     }
     const verifyOtp = async () => {
         try {
-            if (!otp) { console.log("enter the otp to star the ride"); return; }
+            if (!otp) { 
+                window.$toast({
+                    type:'error',
+                    title:"enter the otp to start the ride"
+                });
+                return; 
+            }
             const response = await window.$axios.post("/captain/otp/verify", {
                 otp,
                 ride_id: rideDetails?._id
@@ -44,7 +50,6 @@ const RideAccepted = () => {
         catch (err) {
             window.$toast({ status: 'error', title: err?.response?.data?.message ?? "Something went wrong!" });
             console.log(err)
-
         }
     }
     const getRideData = async () => {
@@ -52,11 +57,21 @@ const RideAccepted = () => {
             const response = await window.$axios.get('/captain/ride/details/' + locationInstance.state?.rideId);
             if (response.status && ['started', 'accepted'].indexOf(response.data?.status) >= 0)
                 setRideDetails(response.data);
-            else navigate('/captain', { replace: true });
+            else {window.$toast({
+                type:'error',
+                title:response.message
+            });
+            navigate('/captain', { replace: true });
+            return;
+        }
             rideId = response?.data?._id
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
             navigate('/captain', { replace: true });
         }
     }
@@ -77,6 +92,10 @@ const RideAccepted = () => {
         }
         catch (err) {
             console.log(err);
+            window.$toast({
+                type:'error',
+                title:"Something went wrong!"
+            });
         }
     }
     useEffect(() => {
